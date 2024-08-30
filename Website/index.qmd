@@ -1,0 +1,136 @@
+---
+title: "Returning Student Scholarship"
+format:
+    html:
+        code-fold: true
+---
+
+## Introduction
+
+Welcome to this Student's returning student scholarship website. This website will walk through three pages of information about a United States Geological Service dataset on Natural Bridges National Park in Utah. The data was collected from 1980 to 2018 and mutliple future scenarios were modelled. The pages will cover the following topics:
+
+Historic Exploratory data analysis: this page will enagage with historic weather and climate data from 1980-2018, finding patterns in the data over time and tracing trends across the years.
+
+Microclimate Clustering: after engaging with relationships between variables in the data, this page will walk through a data clustering process to show how foliage effects and is effected by climate factors on a location by location basis.
+
+Future Modeling and Scenarios: this page will walk thorugh the future scenarios listed in the data, comparing the trends to historic values and finding patterns in the projections of the models.
+
+I hope that you enjoy the pages and are able to learn about climate, water retention, and Natural Brides National Park!
+
+```{r}
+#| echo: FALSE
+#| message: FALSE
+#| warning: FALSE
+library(ggplot2)
+library(ggtext)
+
+my_palette <- c("#6994D9","#91C4EB","#CDE4F6","#C5A5EC","#FCD9E5","#F8ACC6","#ED7CA9")
+two_tone <- c("#ED7CA9","#6994D9")
+
+my_theme <- theme_minimal() +
+  theme(
+    
+    ## Letting everything be markdown
+    axis.title.x = element_markdown(family = "sans"),
+    axis.title.y = element_markdown(family = "sans"),
+    
+    ## Grid
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(color = "gray77"),
+    
+    ## Legend
+    legend.title = element_markdown(family = "sans", face = "bold"),
+    legend.key = element_rect(fill = "white", color = "grey30"),
+    legend.text = element_markdown(family = "sans"),
+    
+    ## Text
+    plot.title = element_markdown(family = "sans", size = 16,face = "bold", hjust = .5),
+    plot.subtitle = element_markdown(family = "sans", size = 12, hjust = .5),
+    axis.title = element_markdown(family = "sans", face = "plain"),
+    axis.text = element_markdown(family = "sans", face = "plain"),
+    plot.caption = element_markdown(family = "sans", size = 9, face = "italic")
+    
+    ## General
+ 
+  )
+```
+
+```{r}
+#| message: FALSE
+#| warning: FALSE
+
+## Graphing packages
+library(ggplot2)
+library(plotly)
+library(tidyverse)
+
+## Importing data
+total_cleaned <- read.csv("../Data/total_merged.csv") %>% select(-X)
+rownames(total_cleaned) <- NULL
+
+## Data preprocessing for graph
+temp_chunk <- total_cleaned %>% filter(RCP == "historical")
+temp_chunk <- temp_chunk[,c(3,20:23)] %>% na.omit()
+temp_chunk <- temp_chunk %>% group_by(year) %>% summarise_at(vars("T_Winter", "T_Summer", "Tmax_Summer", "Tmin_Winter"), mean) 
+
+## We need to keep unnormalized data for the final viz so I'm keeping track of it
+temp_chunk_unorm <- temp_chunk %>% pivot_longer(cols = c("T_Winter", "T_Summer", "Tmax_Summer", "Tmin_Winter"))
+
+## Normalizing each of the columns before combining
+temp_chunk$T_Winter <- (temp_chunk$T_Winter - mean(temp_chunk$T_Winter)) / sd(temp_chunk$T_Winter)
+temp_chunk$T_Summer <- (temp_chunk$T_Summer - mean(temp_chunk$T_Summer)) / sd(temp_chunk$T_Summer)
+temp_chunk$Tmin_Winter <- (temp_chunk$Tmin_Winter - mean(temp_chunk$Tmin_Winter)) / sd(temp_chunk$Tmin_Winter)
+temp_chunk$Tmax_Summer <- (temp_chunk$Tmax_Summer - mean(temp_chunk$Tmax_Summer)) / sd(temp_chunk$Tmax_Summer)
+
+## Pivoting to make it easier to graph
+temp_chunk <- temp_chunk %>% pivot_longer(cols = c("T_Winter", "T_Summer", "Tmax_Summer", "Tmin_Winter"))
+
+## I wanted there to be a label which didn't have underscores
+nice_label <- c()
+for(i in 1:nrow(temp_chunk)){
+  if(temp_chunk[i,2] == "T_Winter"){
+    nice_label <- c(nice_label,"Avg Winter Temp.")
+  } else if(temp_chunk[i,2] == "T_Summer"){
+    nice_label <- c(nice_label,"Avg Summer Temp.")
+  } else if(temp_chunk[i,2] == "Tmax_Summer"){
+    nice_label <- c(nice_label,"Max Summer Temp.")
+  } else{
+    nice_label <- c(nice_label,"Min Winter Temp.")
+  }
+}
+temp_chunk$nice_label <- nice_label
+
+## brining back original data and putting together tooltip text
+temp_chunk$unnorm_value <- temp_chunk_unorm$value
+temp_chunk <- temp_chunk %>% mutate(mytext = paste("Category: ", nice_label, "\nYear: ", as.character(year), "\nNormalized Temp.: ", as.character(value), "\nUnnormalized Temp.:", as.character(unnorm_value)))
+
+## Original Plot to ggplotly
+plot_norm <- ggplot(data = temp_chunk, aes(x = year, y = value, color = nice_label)) + geom_smooth(se = FALSE) +
+  scale_color_manual(values = c("#FA7988", "#4CB2F9","#EB001C", "#0145ED")) + 
+  my_theme + labs(title = "Normalized Temperature by Year") +
+  theme(legend.position = "none") +
+  #guides(color=guide_legend(title="Temperature Value")) +
+  xlab("Year") + ylab("Normalized Temperature Celcius")
+
+## Unnormalized plot to get intersticial values
+plot_unnorm <- ggplot(data = temp_chunk, aes(x = year, y = unnorm_value, color = name)) + geom_smooth(se = FALSE) +
+  scale_color_manual(values = c("#FA7988", "#4CB2F9","#EB001C", "#0145ED")) + 
+  theme_minimal() 
+
+## Plotlying it
+w <- ggplotly(plot_norm)
+w_unnorm <- ggplotly(plot_unnorm)
+
+## This was the step by which I created all the tooltip text I needed for the graph
+text_1 <- paste("Category:", w$x$data[[1]]$name, "\nYear:", w$x$data[[1]]$x, "\nNormalized Temp.:", w$x$data[[1]]$y, "\nUnnormalized Temp. C.:", w_unnorm$x$data[[1]]$y)
+text_2 <- paste("Category:", w$x$data[[2]]$name, "\nYear:", w$x$data[[2]]$x, "\nNormalized Temp.:", w$x$data[[2]]$y, "\nUnnormalized Temp. C.:", w_unnorm$x$data[[2]]$y)
+text_3 <- paste("Category:", w$x$data[[3]]$name, "\nYear:", w$x$data[[3]]$x, "\nNormalized Temp.:", w$x$data[[3]]$y, "\nUnnormalized Temp. C.:", w_unnorm$x$data[[3]]$y)
+text_4 <- paste("Category:", w$x$data[[4]]$name, "\nYear:", w$x$data[[4]]$x, "\nNormalized Temp.:", w$x$data[[4]]$y, "\nUnnormalized Temp. C.:", w_unnorm$x$data[[4]]$y)
+
+## I applied it to the different lines here and printed it out
+w %>%
+  style(text = text_1, traces = 1) %>%
+  style(text = text_2, traces = 2) %>%
+  style(text = text_3, traces = 3) %>%
+  style(text = text_4, traces = 4)
+```

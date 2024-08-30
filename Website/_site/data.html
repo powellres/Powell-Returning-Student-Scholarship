@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Website - Historic Exploratory Data Analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.10.4/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<script src="site_libs/jquery-3.5.1/jquery.min.js"></script>
+<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Website</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./data.html" rel="" target="" aria-current="page">
+ <span class="menu-text">Historic Exploratory Data Analysis</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./microclimate.html" rel="" target="">
+ <span class="menu-text">Microclimate Clustering</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./future.html" rel="" target="">
+ <span class="menu-text">Future Modeling and Scenarios</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#considering-the-parks-foliage" id="toc-considering-the-parks-foliage" class="nav-link" data-scroll-target="#considering-the-parks-foliage">Considering the Park’s Foliage</a></li>
+  <li><a href="#historic-temperature-in-the-park" id="toc-historic-temperature-in-the-park" class="nav-link" data-scroll-target="#historic-temperature-in-the-park">Historic Temperature in the Park</a></li>
+  <li><a href="#percipitation-and-water-content" id="toc-percipitation-and-water-content" class="nav-link" data-scroll-target="#percipitation-and-water-content">Percipitation and Water Content</a></li>
+  <li><a href="#misc.-variables" id="toc-misc.-variables" class="nav-link" data-scroll-target="#misc.-variables">Misc. Variables</a></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Historic Exploratory Data Analysis</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>The dataset gathered by the United States Geological Service is a treasure trove of weather phenomena and unique insights into the climate within Natural Bridges National Park. Over the course of this page I hope to engage with the weather patterns of the area as well as report on the unique relationship between foliage, climate, and water which the data allows for.</p>
+</section>
+<section id="considering-the-parks-foliage" class="level2">
+<h2 class="anchored" data-anchor-id="considering-the-parks-foliage">Considering the Park’s Foliage</h2>
+<p>Before we get too lost, I’d like to start by examining the points of the park we have data on and the representative foliage. Each of the 113 locations within the park was measured for the percentage of coverage of each of the following variables: bare earth, herbs, plant litter, shrubs, ann herbs, and canopy coverage. The values in the data represent the percentage of each area covered by each of those values with the possibility of overlap in instances of trees covering bare earth or shrubbery or there being litter under plants. These six values give us the best understanding of the terrain in each of those locations across the park and they remain constant over all of the years recorded, giving a baseline about each location which can be built off of.</p>
+<section id="foliage-by-location" class="level4">
+<h4 class="anchored" data-anchor-id="foliage-by-location">Foliage by Location</h4>
+
+
+<div class="tableauPlaceholder" id="viz1716238053848" style="position: relative"><noscript><a href="#"><img alt="Dashboard 1 " src="https://public.tableau.com/static/images/RS/RSS1_1/Dashboard1/1_rss.png" style="border: none"></a></noscript><object class="tableauViz" style="display:none;"><param name="host_url" value="https%3A%2F%2Fpublic.tableau.com%2F"> <param name="embed_code_version" value="3"> <param name="site_root" value=""><param name="name" value="RSS1_1/Dashboard1"><param name="tabs" value="no"><param name="toolbar" value="yes"><param name="static_image" value="https://public.tableau.com/static/images/RS/RSS1_1/Dashboard1/1.png"> <param name="animate_transition" value="yes"><param name="display_static_image" value="yes"><param name="display_spinner" value="yes"><param name="display_overlay" value="yes"><param name="display_count" value="yes"><param name="language" value="en-US"><param name="filter" value="publish=yes"></object></div>                <script type="text/javascript">                    var divElement = document.getElementById('viz1716238053848');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else { vizElement.style.width='100%';vizElement.style.height='727px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+<p>Caption: This interactive graph allows you to see the relationship of locations to each other, the variety in foliage composition, and the foliage composition of each location by clicking on it on the map.</p>
+<p>When we dive into the locations themselves and the percentage of each variable on it, bare earth seems to be the most common in the park which isn’t much of a surprise due to the spare foliage of the desert-like terrain. Some locations closer to rivers and streams may also have more tree or shrub coverage due to the abundance of water in otherwise bare terrain. Which raises the question, are there relationships between the foliage types that arise from access to water or other variables.</p>
+</section>
+<section id="interfoliage-correlation" class="level4">
+<h4 class="anchored" data-anchor-id="interfoliage-correlation">InterFoliage Correlation</h4>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Reading in packages</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="do">## for easier manipulation</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot) <span class="do">## specifically for correlation plots</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Reading in data and removing a wayward plot</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>total_cleaned <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../Data/total_merged.csv"</span>) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>X)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(total_cleaned) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot of the shrubbery (Insert monty python joke)</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>corr <span class="ot">&lt;-</span> <span class="fu">cor</span>(total_cleaned[,<span class="dv">7</span><span class="sc">:</span><span class="dv">12</span>]) <span class="do">## Getting specific values</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot.mixed</span>(corr, <span class="at">order =</span> <span class="st">'AOE'</span>, <span class="at">upper =</span> <span class="st">"ellipse"</span>, <span class="at">upper.col =</span> <span class="fu">COL2</span>(<span class="st">'BrBG'</span>), <span class="at">lower.col =</span> <span class="fu">COL2</span>(<span class="st">'BrBG'</span>), <span class="at">tl.col =</span> <span class="st">'black'</span>) <span class="do">## a few accents to personalize it</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="data_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Caption: This correlation plot shows the approximate shape of the data’s plot with the oval and gives the corresponding correlation coefficient accros the chart.</p>
+<p>The answer seems to be yes. One would expect for their to be other plants where there are already some and this tends to be the case, with many of the foliage types having positive correlation to each other. Conversely, an increase in bare ground has negative correlation with many of the plants, showing the inverse to be true as well. This positive negative correlation holds true for all relationships other than canopy and ann herb. The highest correlated is the area taken up by shrubs and plant litter and the most negatively correlated is shrub and bare earth; both of these show that the shrub cover is one of the most linked variables, being both foliage and most in opposition to bare earth.</p>
+<p>Now that I’ve set the scene for the different foliage types in the park, I want to transition to talking about weather patterns which act as a measure of the effects of climate change and can be further used to see hyper local effects.</p>
+</section>
+</section>
+<section id="historic-temperature-in-the-park" class="level2">
+<h2 class="anchored" data-anchor-id="historic-temperature-in-the-park">Historic Temperature in the Park</h2>
+<p>Climate change has effected the world in many ways, from ecological to natural disasters as well as changes to parts of daily life, but none more so than the effect on temperature. Despite some year to year fluctuations there seems to have been an increase in temperature which many see continuing without heavy changes in human behavior. We can see some of this reflected in the average and extreme temperature changes in Natural Bridges National Park. The historic temperature shows some of this behavior and its ramifications will be disscused later in the paper.</p>
+<section id="normalizied-temperature-over-time" class="level4">
+<h4 class="anchored" data-anchor-id="normalizied-temperature-over-time">Normalizied Temperature over Time</h4>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Graphing packages</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Data preprocessing for graph</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>temp_chunk <span class="ot">&lt;-</span> total_cleaned <span class="sc">%&gt;%</span> <span class="fu">filter</span>(RCP <span class="sc">==</span> <span class="st">"historical"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>temp_chunk <span class="ot">&lt;-</span> temp_chunk[,<span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">20</span><span class="sc">:</span><span class="dv">23</span>)] <span class="sc">%&gt;%</span> <span class="fu">na.omit</span>()</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>temp_chunk <span class="ot">&lt;-</span> temp_chunk <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(year) <span class="sc">%&gt;%</span> <span class="fu">summarise_at</span>(<span class="fu">vars</span>(<span class="st">"T_Winter"</span>, <span class="st">"T_Summer"</span>, <span class="st">"Tmax_Summer"</span>, <span class="st">"Tmin_Winter"</span>), mean) </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="do">## We need to keep unnormalized data for the final viz so I'm keeping track of it</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>temp_chunk_unorm <span class="ot">&lt;-</span> temp_chunk <span class="sc">%&gt;%</span> <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="st">"T_Winter"</span>, <span class="st">"T_Summer"</span>, <span class="st">"Tmax_Summer"</span>, <span class="st">"Tmin_Winter"</span>))</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Normalizing each of the columns before combining</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>temp_chunk<span class="sc">$</span>T_Winter <span class="ot">&lt;-</span> (temp_chunk<span class="sc">$</span>T_Winter <span class="sc">-</span> <span class="fu">mean</span>(temp_chunk<span class="sc">$</span>T_Winter)) <span class="sc">/</span> <span class="fu">sd</span>(temp_chunk<span class="sc">$</span>T_Winter)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>temp_chunk<span class="sc">$</span>T_Summer <span class="ot">&lt;-</span> (temp_chunk<span class="sc">$</span>T_Summer <span class="sc">-</span> <span class="fu">mean</span>(temp_chunk<span class="sc">$</span>T_Summer)) <span class="sc">/</span> <span class="fu">sd</span>(temp_chunk<span class="sc">$</span>T_Summer)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>temp_chunk<span class="sc">$</span>Tmin_Winter <span class="ot">&lt;-</span> (temp_chunk<span class="sc">$</span>Tmin_Winter <span class="sc">-</span> <span class="fu">mean</span>(temp_chunk<span class="sc">$</span>Tmin_Winter)) <span class="sc">/</span> <span class="fu">sd</span>(temp_chunk<span class="sc">$</span>Tmin_Winter)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>temp_chunk<span class="sc">$</span>Tmax_Summer <span class="ot">&lt;-</span> (temp_chunk<span class="sc">$</span>Tmax_Summer <span class="sc">-</span> <span class="fu">mean</span>(temp_chunk<span class="sc">$</span>Tmax_Summer)) <span class="sc">/</span> <span class="fu">sd</span>(temp_chunk<span class="sc">$</span>Tmax_Summer)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="do">## Pivoting to make it easier to graph</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>temp_chunk <span class="ot">&lt;-</span> temp_chunk <span class="sc">%&gt;%</span> <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="st">"T_Winter"</span>, <span class="st">"T_Summer"</span>, <span class="st">"Tmax_Summer"</span>, <span class="st">"Tmin_Winter"</span>))</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="do">## I wanted there to be a label which didn't have underscores</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>nice_label <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(temp_chunk)){</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(temp_chunk[i,<span class="dv">2</span>] <span class="sc">==</span> <span class="st">"T_Winter"</span>){</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    nice_label <span class="ot">&lt;-</span> <span class="fu">c</span>(nice_label,<span class="st">"Avg Winter Temp."</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span>(temp_chunk[i,<span class="dv">2</span>] <span class="sc">==</span> <span class="st">"T_Summer"</span>){</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    nice_label <span class="ot">&lt;-</span> <span class="fu">c</span>(nice_label,<span class="st">"Avg Summer Temp."</span>)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span>(temp_chunk[i,<span class="dv">2</span>] <span class="sc">==</span> <span class="st">"Tmax_Summer"</span>){</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    nice_label <span class="ot">&lt;-</span> <span class="fu">c</span>(nice_label,<span class="st">"Max Summer Temp."</span>)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span>{</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    nice_label <span class="ot">&lt;-</span> <span class="fu">c</span>(nice_label,<span class="st">"Min Winter Temp."</span>)</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>temp_chunk<span class="sc">$</span>nice_label <span class="ot">&lt;-</span> nice_label</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="do">## brining back original data and putting together tooltip text</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>temp_chunk<span class="sc">$</span>unnorm_value <span class="ot">&lt;-</span> temp_chunk_unorm<span class="sc">$</span>value</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>temp_chunk <span class="ot">&lt;-</span> temp_chunk <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">mytext =</span> <span class="fu">paste</span>(<span class="st">"Category: "</span>, nice_label, <span class="st">"</span><span class="sc">\n</span><span class="st">Year: "</span>, <span class="fu">as.character</span>(year), <span class="st">"</span><span class="sc">\n</span><span class="st">Normalized Temp.: "</span>, <span class="fu">as.character</span>(value), <span class="st">"</span><span class="sc">\n</span><span class="st">Unnormalized Temp.:"</span>, <span class="fu">as.character</span>(unnorm_value)))</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="do">## Original Plot to ggplotly</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>plot_norm <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> temp_chunk, <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> value, <span class="at">color =</span> nice_label)) <span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#FA7988"</span>, <span class="st">"#4CB2F9"</span>,<span class="st">"#EB001C"</span>, <span class="st">"#0145ED"</span>)) <span class="sc">+</span> </span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>  my_theme <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Normalized Temperature by Year"</span>) <span class="sc">+</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>  <span class="co">#guides(color=guide_legend(title="Temperature Value")) +</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Year"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Normalized Temperature Celcius"</span>)</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="do">## Unnormalized plot to get intersticial values</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>plot_unnorm <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> temp_chunk, <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> unnorm_value, <span class="at">color =</span> name)) <span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#FA7988"</span>, <span class="st">"#4CB2F9"</span>,<span class="st">"#EB001C"</span>, <span class="st">"#0145ED"</span>)) <span class="sc">+</span> </span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() </span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="do">## Plotlying it</span></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> <span class="fu">ggplotly</span>(plot_norm)</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>w_unnorm <span class="ot">&lt;-</span> <span class="fu">ggplotly</span>(plot_unnorm)</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a><span class="do">## This was the step by which I created all the tooltip text I needed for the graph</span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>text_1 <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">"Category:"</span>, w<span class="sc">$</span>x<span class="sc">$</span>data[[<span class="dv">1</span>]]<span class="sc">$</span>name, <span class="st">"</span><span class="sc">\n</span><span class="st">Year:"</span>, w<span class="sc">$</span>x<span class="sc">$</span>data[[<span class="dv">1</span>]]<span class="sc">$</span>x, <span class="st">"</span><span class="sc">\n</span><span class="st">Normalized Temp.:"</span>, w<span class="sc">$</span>x<span class="sc">$</span>data[[<span class="dv">1</span>]]<span class="sc">$</span>y, <span class="st">"</span><span class="sc">\n</span><span class="st">Unnormalized Temp. C.:"</span>, w_unnorm<span class="sc">$</span>x<span class="sc">$</span>data[[<span class="dv">1</span>]]<span class="sc">$</span>y)</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>text_2 <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">"Category:"</span>, w<span class="sc">$</span>x<span class="sc">$</span>data[[<span class="dv">2</span>]]<span class="sc">$</span>name, <span class="st">"</span><span class="sc">\n</span><span class="st">Year:"</span>, w<span class="sc">$</span>x<span class="sc">$</span>data[[<span class="dv">2</span>]]<span class="sc">$</span>x, <span class="st">"</span><span class="sc">\n</span><span class="st">Normalized Temp.:"</span>, w<span class="sc">$</span>x<span class="sc">$</span>data[[<span class="dv">2</span>]]<span class="sc">$</span>y, <span class="st">"</span><span class="sc">\n</span><span class="st">Unnormalized Temp. C.:"</span>, w_unnorm<span class="sc">$</span>x<span class="sc">$</span>data[[<span class="dv">2</span>]]<span class="sc">$</span>y)</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>text_3 <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">"Category:"</span>, w<span class="sc">$</span>x<span class="sc">$</span>data[[<span class="dv">3</span>]]<span class="sc">$</span>name, <span class="st">"</span><span class="sc">\n</span><span class="st">Year:"</span>, w<span class="sc">$</span>x<span class="sc">$</span>data[[<span class="dv">3</span>]]<span class="sc">$</span>x, <span class="st">"</span><span class="sc">\n</span><span class="st">Normalized Temp.:"</span>, w<span class="sc">$</span>x<span class="sc">$</span>data[[<span class="dv">3</span>]]<span class="sc">$</span>y, <span class="st">"</span><span class="sc">\n</span><span class="st">Unnormalized Temp. C.:"</span>, w_unnorm<span class="sc">$</span>x<span class="sc">$</span>data[[<span class="dv">3</span>]]<span class="sc">$</span>y)</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>text_4 <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">"Category:"</span>, w<span class="sc">$</span>x<span class="sc">$</span>data[[<span class="dv">4</span>]]<span class="sc">$</span>name, <span class="st">"</span><span class="sc">\n</span><span class="st">Year:"</span>, w<span class="sc">$</span>x<span class="sc">$</span>data[[<span class="dv">4</span>]]<span class="sc">$</span>x, <span class="st">"</span><span class="sc">\n</span><span class="st">Normalized Temp.:"</span>, w<span class="sc">$</span>x<span class="sc">$</span>data[[<span class="dv">4</span>]]<span class="sc">$</span>y, <span class="st">"</span><span class="sc">\n</span><span class="st">Unnormalized Temp. C.:"</span>, w_unnorm<span class="sc">$</span>x<span class="sc">$</span>data[[<span class="dv">4</span>]]<span class="sc">$</span>y)</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a><span class="do">## I applied it to the different lines here and printed it out</span></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>w <span class="sc">%&gt;%</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">style</span>(<span class="at">text =</span> text_1, <span class="at">traces =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">style</span>(<span class="at">text =</span> text_2, <span class="at">traces =</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">style</span>(<span class="at">text =</span> text_3, <span class="at">traces =</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">style</span>(<span class="at">text =</span> text_4, <span class="at">traces =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-23a4a80063a1d26d37cc" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-23a4a80063a1d26d37cc">{"x":{"data":[{"x":[1980,1980.4810126582279,1980.9620253164558,1981.4430379746836,1981.9240506329113,1982.4050632911392,1982.8860759493671,1983.367088607595,1983.8481012658228,1984.3291139240507,1984.8101265822784,1985.2911392405063,1985.7721518987341,1986.253164556962,1986.7341772151899,1987.2151898734178,1987.6962025316457,1988.1772151898733,1988.6582278481012,1989.1392405063291,1989.620253164557,1990.1012658227849,1990.5822784810127,1991.0632911392406,1991.5443037974683,1992.0253164556962,1992.506329113924,1992.9873417721519,1993.4683544303798,1993.9493670886077,1994.4303797468353,1994.9113924050632,1995.3924050632911,1995.873417721519,1996.3544303797469,1996.8354430379748,1997.3164556962026,1997.7974683544303,1998.2784810126582,1998.7594936708861,1999.2405063291139,1999.7215189873418,2000.2025316455697,2000.6835443037974,2001.1645569620252,2001.6455696202531,2002.126582278481,2002.6075949367089,2003.0886075949368,2003.5696202531647,2004.0506329113923,2004.5316455696202,2005.0126582278481,2005.493670886076,2005.9746835443038,2006.4556962025317,2006.9367088607596,2007.4177215189873,2007.8987341772151,2008.379746835443,2008.8607594936709,2009.3417721518988,2009.8227848101267,2010.3037974683543,2010.7848101265822,2011.2658227848101,2011.746835443038,2012.2278481012659,2012.7088607594937,2013.1898734177216,2013.6708860759493,2014.1518987341772,2014.632911392405,2015.1139240506329,2015.5949367088608,2016.0759493670887,2016.5569620253164,2017.0379746835442,2017.5189873417721,2018],"y":[-0.16183549901097824,-0.19901882025329645,-0.23388787416110252,-0.26641370693523392,-0.29656736477651441,-0.32431989388581001,-0.34964234046394332,-0.37250575071175196,-0.39288117083007323,-0.41072295822632732,-0.42598675863104285,-0.43871422511928387,-0.44895181921562499,-0.45674600244464858,-0.46214323633093701,-0.46518998239907255,-0.46593270217363758,-0.46441785717921574,-0.46069190894038786,-0.45472036708336994,-0.44529843030034405,-0.43235567478950138,-0.41634346419104334,-0.39771316214517155,-0.37691613229209775,-0.35440373827200378,-0.33062734372510061,-0.30603831229158962,-0.28108800761167252,-0.25622779332555085,-0.2278036156620637,-0.191080028481461,-0.14796529192018074,-0.10042728909094342,-0.050433903106469224,4.6982920521280828e-05,0.049047485877307929,0.094599722651149867,0.13473581012937064,0.16748786519922729,0.19224982614367866,0.21577711213504447,0.23887528367319513,0.2610494547413082,0.28180473932259248,0.30064625140022488,0.31707910495739305,0.33060841397728463,0.34073929244308726,0.34697685433798864,0.34878710839862082,0.34209789119173184,0.32621403982353336,0.303669926234794,0.27699992236628201,0.24873840015876614,0.22141973155301473,0.1975782884898063,0.17974844290988576,0.17046456675403401,0.17226103196301945,0.18396458322441467,0.19673558936447669,0.21045297575992566,0.22558216814615731,0.2425885922585482,0.26193767383248123,0.28409483860333928,0.30952551230650527,0.33869512067736202,0.37206908945127554,0.41009556652847912,0.45276903518610007,0.49976187747533857,0.55076733650154241,0.6054786553700594,0.66358907718620896,0.72479184505539374,0.78878020208293531,0.85524739137418082],"text":["Category: Avg Summer Temp. <br />Year: 1980 <br />Normalized Temp.: -0.161835499010978 <br />Unnormalized Temp. C.: 22.2807469950234","Category: Avg Summer Temp. <br />Year: 1980.48101265823 <br />Normalized Temp.: -0.199018820253296 <br />Unnormalized Temp. C.: 22.2463172568876","Category: Avg Summer Temp. <br />Year: 1980.96202531646 <br />Normalized Temp.: -0.233887874161103 <br />Unnormalized Temp. C.: 22.2140304047459","Category: Avg Summer Temp. <br />Year: 1981.44303797468 <br />Normalized Temp.: -0.266413706935234 <br />Unnormalized Temp. C.: 22.1839132482455","Category: Avg Summer Temp. <br />Year: 1981.92405063291 <br />Normalized Temp.: -0.296567364776514 <br />Unnormalized Temp. C.: 22.1559925970334","Category: Avg Summer Temp. <br />Year: 1982.40506329114 <br />Normalized Temp.: -0.32431989388581 <br />Unnormalized Temp. C.: 22.130295260757","Category: Avg Summer Temp. <br />Year: 1982.88607594937 <br />Normalized Temp.: -0.349642340463943 <br />Unnormalized Temp. C.: 22.1068480490633","Category: Avg Summer Temp. <br />Year: 1983.36708860759 <br />Normalized Temp.: -0.372505750711752 <br />Unnormalized Temp. C.: 22.0856777715995","Category: Avg Summer Temp. <br />Year: 1983.84810126582 <br />Normalized Temp.: -0.392881170830073 <br />Unnormalized Temp. C.: 22.0668112380129","Category: Avg Summer Temp. <br />Year: 1984.32911392405 <br />Normalized Temp.: -0.410722958226327 <br />Unnormalized Temp. C.: 22.0502907108678","Category: Avg Summer Temp. <br />Year: 1984.81012658228 <br />Normalized Temp.: -0.425986758631043 <br />Unnormalized Temp. C.: 22.0361572598115","Category: Avg Summer Temp. <br />Year: 1985.29113924051 <br />Normalized Temp.: -0.438714225119284 <br />Unnormalized Temp. C.: 22.0243723163561","Category: Avg Summer Temp. <br />Year: 1985.77215189873 <br />Normalized Temp.: -0.448951819215625 <br />Unnormalized Temp. C.: 22.0148928596508","Category: Avg Summer Temp. <br />Year: 1986.25316455696 <br />Normalized Temp.: -0.456746002444649 <br />Unnormalized Temp. C.: 22.0076758688444","Category: Avg Summer Temp. <br />Year: 1986.73417721519 <br />Normalized Temp.: -0.462143236330937 <br />Unnormalized Temp. C.: 22.0026783230858","Category: Avg Summer Temp. <br />Year: 1987.21518987342 <br />Normalized Temp.: -0.465189982399073 <br />Unnormalized Temp. C.: 21.9998572015241","Category: Avg Summer Temp. <br />Year: 1987.69620253165 <br />Normalized Temp.: -0.465932702173638 <br />Unnormalized Temp. C.: 21.9991694833082","Category: Avg Summer Temp. <br />Year: 1988.17721518987 <br />Normalized Temp.: -0.464417857179216 <br />Unnormalized Temp. C.: 22.000572147587","Category: Avg Summer Temp. <br />Year: 1988.6582278481 <br />Normalized Temp.: -0.460691908940388 <br />Unnormalized Temp. C.: 22.0040221735095","Category: Avg Summer Temp. <br />Year: 1989.13924050633 <br />Normalized Temp.: -0.45472036708337 <br />Unnormalized Temp. C.: 22.0095514972906","Category: Avg Summer Temp. <br />Year: 1989.62025316456 <br />Normalized Temp.: -0.445298430300344 <br />Unnormalized Temp. C.: 22.0182756995763","Category: Avg Summer Temp. <br />Year: 1990.10126582278 <br />Normalized Temp.: -0.432355674789501 <br />Unnormalized Temp. C.: 22.0302599889863","Category: Avg Summer Temp. <br />Year: 1990.58227848101 <br />Normalized Temp.: -0.416343464191043 <br />Unnormalized Temp. C.: 22.045086427278","Category: Avg Summer Temp. <br />Year: 1991.06329113924 <br />Normalized Temp.: -0.397713162145172 <br />Unnormalized Temp. C.: 22.0623370762088","Category: Avg Summer Temp. <br />Year: 1991.54430379747 <br />Normalized Temp.: -0.376916132292098 <br />Unnormalized Temp. C.: 22.0815939975359","Category: Avg Summer Temp. <br />Year: 1992.0253164557 <br />Normalized Temp.: -0.354403738272004 <br />Unnormalized Temp. C.: 22.1024392530167","Category: Avg Summer Temp. <br />Year: 1992.50632911392 <br />Normalized Temp.: -0.330627343725101 <br />Unnormalized Temp. C.: 22.1244549044086","Category: Avg Summer Temp. <br />Year: 1992.98734177215 <br />Normalized Temp.: -0.30603831229159 <br />Unnormalized Temp. C.: 22.1472230134689","Category: Avg Summer Temp. <br />Year: 1993.46835443038 <br />Normalized Temp.: -0.281088007611673 <br />Unnormalized Temp. C.: 22.1703256419549","Category: Avg Summer Temp. <br />Year: 1993.94936708861 <br />Normalized Temp.: -0.256227793325551 <br />Unnormalized Temp. C.: 22.193344851624","Category: Avg Summer Temp. <br />Year: 1994.43037974684 <br />Normalized Temp.: -0.227803615662064 <br />Unnormalized Temp. C.: 22.2196640980222","Category: Avg Summer Temp. <br />Year: 1994.91139240506 <br />Normalized Temp.: -0.191080028481461 <br />Unnormalized Temp. C.: 22.2536681473591","Category: Avg Summer Temp. <br />Year: 1995.39240506329 <br />Normalized Temp.: -0.147965291920181 <br />Unnormalized Temp. C.: 22.2935900542788","Category: Avg Summer Temp. <br />Year: 1995.87341772152 <br />Normalized Temp.: -0.100427289090943 <br />Unnormalized Temp. C.: 22.3376076657838","Category: Avg Summer Temp. <br />Year: 1996.35443037975 <br />Normalized Temp.: -0.0504339031064692 <br />Unnormalized Temp. C.: 22.3838988288768","Category: Avg Summer Temp. <br />Year: 1996.83544303797 <br />Normalized Temp.: 4.69829205212808e-05 <br />Unnormalized Temp. C.: 22.4306413905604","Category: Avg Summer Temp. <br />Year: 1997.3164556962 <br />Normalized Temp.: 0.0490474858773079 <br />Unnormalized Temp. C.: 22.4760131978374","Category: Avg Summer Temp. <br />Year: 1997.79746835443 <br />Normalized Temp.: 0.0945997226511499 <br />Unnormalized Temp. C.: 22.5181920977104","Category: Avg Summer Temp. <br />Year: 1998.27848101266 <br />Normalized Temp.: 0.134735810129371 <br />Unnormalized Temp. C.: 22.555355937182","Category: Avg Summer Temp. <br />Year: 1998.75949367089 <br />Normalized Temp.: 0.167487865199227 <br />Unnormalized Temp. C.: 22.5856825632549","Category: Avg Summer Temp. <br />Year: 1999.24050632911 <br />Normalized Temp.: 0.192249826143679 <br />Unnormalized Temp. C.: 22.6086107956602","Category: Avg Summer Temp. <br />Year: 1999.72151898734 <br />Normalized Temp.: 0.215777112135044 <br />Unnormalized Temp. C.: 22.6303957860448","Category: Avg Summer Temp. <br />Year: 2000.20253164557 <br />Normalized Temp.: 0.238875283673195 <br />Unnormalized Temp. C.: 22.6517834397267","Category: Avg Summer Temp. <br />Year: 2000.6835443038 <br />Normalized Temp.: 0.261049454741308 <br />Unnormalized Temp. C.: 22.6723155191038","Category: Avg Summer Temp. <br />Year: 2001.16455696203 <br />Normalized Temp.: 0.281804739322592 <br />Unnormalized Temp. C.: 22.6915337865741","Category: Avg Summer Temp. <br />Year: 2001.64556962025 <br />Normalized Temp.: 0.300646251400225 <br />Unnormalized Temp. C.: 22.7089800045353","Category: Avg Summer Temp. <br />Year: 2002.12658227848 <br />Normalized Temp.: 0.317079104957393 <br />Unnormalized Temp. C.: 22.7241959353853","Category: Avg Summer Temp. <br />Year: 2002.60759493671 <br />Normalized Temp.: 0.330608413977285 <br />Unnormalized Temp. C.: 22.736723341522","Category: Avg Summer Temp. <br />Year: 2003.08860759494 <br />Normalized Temp.: 0.340739292443087 <br />Unnormalized Temp. C.: 22.7461039853432","Category: Avg Summer Temp. <br />Year: 2003.56962025316 <br />Normalized Temp.: 0.346976854337989 <br />Unnormalized Temp. C.: 22.7518796292467","Category: Avg Summer Temp. <br />Year: 2004.05063291139 <br />Normalized Temp.: 0.348787108398621 <br />Unnormalized Temp. C.: 22.7535558262938","Category: Avg Summer Temp. <br />Year: 2004.53164556962 <br />Normalized Temp.: 0.342097891191732 <br />Unnormalized Temp. C.: 22.7473619740754","Category: Avg Summer Temp. <br />Year: 2005.01265822785 <br />Normalized Temp.: 0.326214039823533 <br />Unnormalized Temp. C.: 22.7326543894669","Category: Avg Summer Temp. <br />Year: 2005.49367088608 <br />Normalized Temp.: 0.303669926234794 <br />Unnormalized Temp. C.: 22.7117797633864","Category: Avg Summer Temp. <br />Year: 2005.9746835443 <br />Normalized Temp.: 0.276999922366282 <br />Unnormalized Temp. C.: 22.6870847867519","Category: Avg Summer Temp. <br />Year: 2006.45569620253 <br />Normalized Temp.: 0.248738400158766 <br />Unnormalized Temp. C.: 22.6609161504812","Category: Avg Summer Temp. <br />Year: 2006.93670886076 <br />Normalized Temp.: 0.221419731553015 <br />Unnormalized Temp. C.: 22.6356205454925","Category: Avg Summer Temp. <br />Year: 2007.41772151899 <br />Normalized Temp.: 0.197578288489806 <br />Unnormalized Temp. C.: 22.6135446627037","Category: Avg Summer Temp. <br />Year: 2007.89873417722 <br />Normalized Temp.: 0.179748442909886 <br />Unnormalized Temp. C.: 22.5970351930326","Category: Avg Summer Temp. <br />Year: 2008.37974683544 <br />Normalized Temp.: 0.170464566754034 <br />Unnormalized Temp. C.: 22.5884388273974","Category: Avg Summer Temp. <br />Year: 2008.86075949367 <br />Normalized Temp.: 0.172261031963019 <br />Unnormalized Temp. C.: 22.5901022567159","Category: Avg Summer Temp. <br />Year: 2009.3417721519 <br />Normalized Temp.: 0.183964583224415 <br />Unnormalized Temp. C.: 22.6009391102225","Category: Avg Summer Temp. <br />Year: 2009.82278481013 <br />Normalized Temp.: 0.196735589364477 <br />Unnormalized Temp. C.: 22.6127643690332","Category: Avg Summer Temp. <br />Year: 2010.30379746835 <br />Normalized Temp.: 0.210452975759926 <br />Unnormalized Temp. C.: 22.6254659246157","Category: Avg Summer Temp. <br />Year: 2010.78481012658 <br />Normalized Temp.: 0.225582168146157 <br />Unnormalized Temp. C.: 22.63947473595","Category: Avg Summer Temp. <br />Year: 2011.26582278481 <br />Normalized Temp.: 0.242588592258548 <br />Unnormalized Temp. C.: 22.6552217620158","Category: Avg Summer Temp. <br />Year: 2011.74683544304 <br />Normalized Temp.: 0.261937673832481 <br />Unnormalized Temp. C.: 22.673137961793","Category: Avg Summer Temp. <br />Year: 2012.22784810127 <br />Normalized Temp.: 0.284094838603339 <br />Unnormalized Temp. C.: 22.6936542942616","Category: Avg Summer Temp. <br />Year: 2012.70886075949 <br />Normalized Temp.: 0.309525512306505 <br />Unnormalized Temp. C.: 22.7172017184013","Category: Avg Summer Temp. <br />Year: 2013.18987341772 <br />Normalized Temp.: 0.338695120677362 <br />Unnormalized Temp. C.: 22.7442111931921","Category: Avg Summer Temp. <br />Year: 2013.67088607595 <br />Normalized Temp.: 0.372069089451276 <br />Unnormalized Temp. C.: 22.7751136776138","Category: Avg Summer Temp. <br />Year: 2014.15189873418 <br />Normalized Temp.: 0.410095566528479 <br />Unnormalized Temp. C.: 22.8103241323084","Category: Avg Summer Temp. <br />Year: 2014.63291139241 <br />Normalized Temp.: 0.4527690351861 <br />Unnormalized Temp. C.: 22.8498374490897","Category: Avg Summer Temp. <br />Year: 2015.11392405063 <br />Normalized Temp.: 0.499761877475339 <br />Unnormalized Temp. C.: 22.8933502715116","Category: Avg Summer Temp. <br />Year: 2015.59493670886 <br />Normalized Temp.: 0.550767336501542 <br />Unnormalized Temp. C.: 22.9405785593325","Category: Avg Summer Temp. <br />Year: 2016.07594936709 <br />Normalized Temp.: 0.605478655370059 <br />Unnormalized Temp. C.: 22.9912382723106","Category: Avg Summer Temp. <br />Year: 2016.55696202532 <br />Normalized Temp.: 0.663589077186209 <br />Unnormalized Temp. C.: 23.0450453702041","Category: Avg Summer Temp. <br />Year: 2017.03797468354 <br />Normalized Temp.: 0.724791845055394 <br />Unnormalized Temp. C.: 23.1017158127713","Category: Avg Summer Temp. <br />Year: 2017.51898734177 <br />Normalized Temp.: 0.788780202082935 <br />Unnormalized Temp. C.: 23.1609655597705","Category: Avg Summer Temp. <br />Year: 2018 <br />Normalized Temp.: 0.855247391374181 <br />Unnormalized Temp. C.: 23.22251057096"],"type":"scatter","mode":"lines","name":"Avg Summer Temp.","line":{"width":3.7795275590551185,"color":"rgba(250,121,136,1)","dash":"solid"},"hoveron":"points","legendgroup":"Avg Summer Temp.","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1980,1980.4810126582279,1980.9620253164558,1981.4430379746836,1981.9240506329113,1982.4050632911392,1982.8860759493671,1983.367088607595,1983.8481012658228,1984.3291139240507,1984.8101265822784,1985.2911392405063,1985.7721518987341,1986.253164556962,1986.7341772151899,1987.2151898734178,1987.6962025316457,1988.1772151898733,1988.6582278481012,1989.1392405063291,1989.620253164557,1990.1012658227849,1990.5822784810127,1991.0632911392406,1991.5443037974683,1992.0253164556962,1992.506329113924,1992.9873417721519,1993.4683544303798,1993.9493670886077,1994.4303797468353,1994.9113924050632,1995.3924050632911,1995.873417721519,1996.3544303797469,1996.8354430379748,1997.3164556962026,1997.7974683544303,1998.2784810126582,1998.7594936708861,1999.2405063291139,1999.7215189873418,2000.2025316455697,2000.6835443037974,2001.1645569620252,2001.6455696202531,2002.126582278481,2002.6075949367089,2003.0886075949368,2003.5696202531647,2004.0506329113923,2004.5316455696202,2005.0126582278481,2005.493670886076,2005.9746835443038,2006.4556962025317,2006.9367088607596,2007.4177215189873,2007.8987341772151,2008.379746835443,2008.8607594936709,2009.3417721518988,2009.8227848101267,2010.3037974683543,2010.7848101265822,2011.2658227848101,2011.746835443038,2012.2278481012659,2012.7088607594937,2013.1898734177216,2013.6708860759493,2014.1518987341772,2014.632911392405,2015.1139240506329,2015.5949367088608,2016.0759493670887,2016.5569620253164,2017.0379746835442,2017.5189873417721,2018],"y":[1.0858207964901616,0.93975014885986186,0.79996419977469513,0.66678532579046834,0.54053590346304603,0.42153830934811615,0.31011492000154711,0.20658811197914584,0.11128026183671932,0.024652339953174382,-0.052971191711313072,-0.12211601213356914,-0.183352155547163,-0.23724965618570254,-0.28437854828279568,-0.3253088660720504,-0.36061064378707469,-0.39085391566146321,-0.4166087159288524,-0.43785449038901492,-0.44572192710013886,-0.4389014986540119,-0.41979606742937531,-0.39080849580497068,-0.35434164615955804,-0.31279838087184331,-0.26858156232058383,-0.22409405288452092,-0.18173871494239602,-0.14391841087295065,-0.10169809367374268,-0.041980301182674054,0.030770315021619095,0.11192807234797519,0.19686728820523294,0.28096228000223061,0.35958736514780681,0.42811686105077085,0.48192508512002769,0.51638635476438066,0.52724958448524406,0.51533302400761261,0.48455403722136375,0.43881054089723565,0.38200045180589709,0.31802168671808007,0.2507721624044979,0.18414979563586442,0.12205250318289285,0.068378201816296877,0.026886472174867518,-0.013624515637329283,-0.060371856823881152,-0.11075034131240373,-0.16215475903051263,-0.2119798999058235,-0.25762055386595201,-0.29647151083849738,-0.32592756075111307,-0.34338349353139447,-0.34623409910695718,-0.33584202962559478,-0.32170496348338534,-0.3039191008644393,-0.28195098681615677,-0.2552671663859622,-0.22333418462127236,-0.1856185865695042,-0.14158691727807443,-0.090705721794400007,-0.032441545165927087,0.033712536919387567,0.10765713036169783,0.18899646568528483,0.27739122261170479,0.37250208086251374,0.47398972015921848,0.5815148202234709,0.69473806077678124,0.81332012154070521],"text":["Category: Avg Winter Temp. <br />Year: 1980 <br />Normalized Temp.: 1.08582079649016 <br />Unnormalized Temp. C.: 1.39402130972042","Category: Avg Winter Temp. <br />Year: 1980.48101265823 <br />Normalized Temp.: 0.939750148859862 <br />Unnormalized Temp. C.: 1.19086972231963","Category: Avg Winter Temp. <br />Year: 1980.96202531646 <br />Normalized Temp.: 0.799964199774695 <br />Unnormalized Temp. C.: 0.996458744387555","Category: Avg Winter Temp. <br />Year: 1981.44303797468 <br />Normalized Temp.: 0.666785325790468 <br />Unnormalized Temp. C.: 0.811236729581254","Category: Avg Winter Temp. <br />Year: 1981.92405063291 <br />Normalized Temp.: 0.540535903463046 <br />Unnormalized Temp. C.: 0.635652031557855","Category: Avg Winter Temp. <br />Year: 1982.40506329114 <br />Normalized Temp.: 0.421538309348116 <br />Unnormalized Temp. C.: 0.470153003974245","Category: Avg Winter Temp. <br />Year: 1982.88607594937 <br />Normalized Temp.: 0.310114920001547 <br />Unnormalized Temp. C.: 0.31518800048756","Category: Avg Winter Temp. <br />Year: 1983.36708860759 <br />Normalized Temp.: 0.206588111979146 <br />Unnormalized Temp. C.: 0.171205374754853","Category: Avg Winter Temp. <br />Year: 1983.84810126582 <br />Normalized Temp.: 0.111280261836719 <br />Unnormalized Temp. C.: 0.0386534804331754","Category: Avg Winter Temp. <br />Year: 1984.32911392405 <br />Normalized Temp.: 0.0246523399531744 <br />Unnormalized Temp. C.: -0.0818265758229949","Category: Avg Winter Temp. <br />Year: 1984.81012658228 <br />Normalized Temp.: -0.0529711917113131 <br />Unnormalized Temp. C.: -0.18978354002574","Category: Avg Winter Temp. <br />Year: 1985.29113924051 <br />Normalized Temp.: -0.122116012133569 <br />Unnormalized Temp. C.: -0.28594851401063","Category: Avg Winter Temp. <br />Year: 1985.77215189873 <br />Normalized Temp.: -0.183352155547163 <br />Unnormalized Temp. C.: -0.371114287850833","Category: Avg Winter Temp. <br />Year: 1986.25316455696 <br />Normalized Temp.: -0.237249656185703 <br />Unnormalized Temp. C.: -0.446073651619568","Category: Avg Winter Temp. <br />Year: 1986.73417721519 <br />Normalized Temp.: -0.284378548282796 <br />Unnormalized Temp. C.: -0.511619395390057","Category: Avg Winter Temp. <br />Year: 1987.21518987342 <br />Normalized Temp.: -0.32530886607205 <br />Unnormalized Temp. C.: -0.56854430923552","Category: Avg Winter Temp. <br />Year: 1987.69620253165 <br />Normalized Temp.: -0.360610643787075 <br />Unnormalized Temp. C.: -0.617641183229179","Category: Avg Winter Temp. <br />Year: 1988.17721518987 <br />Normalized Temp.: -0.390853915661463 <br />Unnormalized Temp. C.: -0.659702807444236","Category: Avg Winter Temp. <br />Year: 1988.6582278481 <br />Normalized Temp.: -0.416608715928852 <br />Unnormalized Temp. C.: -0.695521971953952","Category: Avg Winter Temp. <br />Year: 1989.13924050633 <br />Normalized Temp.: -0.437854490389015 <br />Unnormalized Temp. C.: -0.725070090464832","Category: Avg Winter Temp. <br />Year: 1989.62025316456 <br />Normalized Temp.: -0.445721927100139 <br />Unnormalized Temp. C.: -0.736011934583202","Category: Avg Winter Temp. <br />Year: 1990.10126582278 <br />Normalized Temp.: -0.438901498654012 <br />Unnormalized Temp. C.: -0.7265262446923","Category: Avg Winter Temp. <br />Year: 1990.58227848101 <br />Normalized Temp.: -0.419796067429375 <br />Unnormalized Temp. C.: -0.699954864718105","Category: Avg Winter Temp. <br />Year: 1991.06329113924 <br />Normalized Temp.: -0.390808495804971 <br />Unnormalized Temp. C.: -0.659639638586593","Category: Avg Winter Temp. <br />Year: 1991.54430379747 <br />Normalized Temp.: -0.354341646159558 <br />Unnormalized Temp. C.: -0.608922410223769","Category: Avg Winter Temp. <br />Year: 1992.0253164557 <br />Normalized Temp.: -0.312798380871843 <br />Unnormalized Temp. C.: -0.551145023555561","Category: Avg Winter Temp. <br />Year: 1992.50632911392 <br />Normalized Temp.: -0.268581562320584 <br />Unnormalized Temp. C.: -0.48964932250797","Category: Avg Winter Temp. <br />Year: 1992.98734177215 <br />Normalized Temp.: -0.224094052884521 <br />Unnormalized Temp. C.: -0.427777151006971","Category: Avg Winter Temp. <br />Year: 1993.46835443038 <br />Normalized Temp.: -0.181738714942396 <br />Unnormalized Temp. C.: -0.368870352978545","Category: Avg Winter Temp. <br />Year: 1993.94936708861 <br />Normalized Temp.: -0.143918410872951 <br />Unnormalized Temp. C.: -0.316270772348667","Category: Avg Winter Temp. <br />Year: 1994.43037974684 <br />Normalized Temp.: -0.101698093673743 <br />Unnormalized Temp. C.: -0.257551757962612","Category: Avg Winter Temp. <br />Year: 1994.91139240506 <br />Normalized Temp.: -0.0419803011826741 <br />Unnormalized Temp. C.: -0.174497670523111","Category: Avg Winter Temp. <br />Year: 1995.39240506329 <br />Normalized Temp.: 0.0307703150216191 <br />Unnormalized Temp. C.: -0.0733178414058059","Category: Avg Winter Temp. <br />Year: 1995.87341772152 <br />Normalized Temp.: 0.111928072347975 <br />Unnormalized Temp. C.: 0.039554439906085","Category: Avg Winter Temp. <br />Year: 1996.35443037975 <br />Normalized Temp.: 0.196867288205233 <br />Unnormalized Temp. C.: 0.157685883929346","Category: Avg Winter Temp. <br />Year: 1996.83544303797 <br />Normalized Temp.: 0.280962280002231 <br />Unnormalized Temp. C.: 0.27464320118076","Category: Avg Winter Temp. <br />Year: 1997.3164556962 <br />Normalized Temp.: 0.359587365147807 <br />Unnormalized Temp. C.: 0.38399310217711","Category: Avg Winter Temp. <br />Year: 1997.79746835443 <br />Normalized Temp.: 0.428116861050771 <br />Unnormalized Temp. C.: 0.479302297435139","Category: Avg Winter Temp. <br />Year: 1998.27848101266 <br />Normalized Temp.: 0.481925085120028 <br />Unnormalized Temp. C.: 0.554137497471723","Category: Avg Winter Temp. <br />Year: 1998.75949367089 <br />Normalized Temp.: 0.516386354764381 <br />Unnormalized Temp. C.: 0.602065412803597","Category: Avg Winter Temp. <br />Year: 1999.24050632911 <br />Normalized Temp.: 0.527249584485244 <br />Unnormalized Temp. C.: 0.617173734686843","Category: Avg Winter Temp. <br />Year: 1999.72151898734 <br />Normalized Temp.: 0.515333024007613 <br />Unnormalized Temp. C.: 0.600600465404739","Category: Avg Winter Temp. <br />Year: 2000.20253164557 <br />Normalized Temp.: 0.484554037221364 <br />Unnormalized Temp. C.: 0.55779378161403","Category: Avg Winter Temp. <br />Year: 2000.6835443038 <br />Normalized Temp.: 0.438810540897236 <br />Unnormalized Temp. C.: 0.494174813380051","Category: Avg Winter Temp. <br />Year: 2001.16455696203 <br />Normalized Temp.: 0.382000451805897 <br />Unnormalized Temp. C.: 0.41516469076804","Category: Avg Winter Temp. <br />Year: 2001.64556962025 <br />Normalized Temp.: 0.31802168671808 <br />Unnormalized Temp. C.: 0.326184543843326","Category: Avg Winter Temp. <br />Year: 2002.12658227848 <br />Normalized Temp.: 0.250772162404498 <br />Unnormalized Temp. C.: 0.232655502671209","Category: Avg Winter Temp. <br />Year: 2002.60759493671 <br />Normalized Temp.: 0.184149795635864 <br />Unnormalized Temp. C.: 0.139998697316989","Category: Avg Winter Temp. <br />Year: 2003.08860759494 <br />Normalized Temp.: 0.122052503182893 <br />Unnormalized Temp. C.: 0.0536352578459678","Category: Avg Winter Temp. <br />Year: 2003.56962025316 <br />Normalized Temp.: 0.0683782018162969 <br />Unnormalized Temp. C.: -0.0210136856765533","Category: Avg Winter Temp. <br />Year: 2004.05063291139 <br />Normalized Temp.: 0.0268864721748675 <br />Unnormalized Temp. C.: -0.0787193977919304","Category: Avg Winter Temp. <br />Year: 2004.53164556962 <br />Normalized Temp.: -0.0136245156373293 <br />Unnormalized Temp. C.: -0.135061117464806","Category: Avg Winter Temp. <br />Year: 2005.01265822785 <br />Normalized Temp.: -0.0603718568238812 <br />Unnormalized Temp. C.: -0.200076209291129","Category: Avg Winter Temp. <br />Year: 2005.49367088608 <br />Normalized Temp.: -0.110750341312404 <br />Unnormalized Temp. C.: -0.27014140897856","Category: Avg Winter Temp. <br />Year: 2005.9746835443 <br />Normalized Temp.: -0.162154759030513 <br />Unnormalized Temp. C.: -0.341633452234764","Category: Avg Winter Temp. <br />Year: 2006.45569620253 <br />Normalized Temp.: -0.211979899905823 <br />Unnormalized Temp. C.: -0.410929074767403","Category: Avg Winter Temp. <br />Year: 2006.93670886076 <br />Normalized Temp.: -0.257620553865952 <br />Unnormalized Temp. C.: -0.47440501228414","Category: Avg Winter Temp. <br />Year: 2007.41772151899 <br />Normalized Temp.: -0.296471510838497 <br />Unnormalized Temp. C.: -0.528438000492616","Category: Avg Winter Temp. <br />Year: 2007.89873417722 <br />Normalized Temp.: -0.325927560751113 <br />Unnormalized Temp. C.: -0.569404775100545","Category: Avg Winter Temp. <br />Year: 2008.37974683544 <br />Normalized Temp.: -0.343383493531394 <br />Unnormalized Temp. C.: -0.593682071815563","Category: Avg Winter Temp. <br />Year: 2008.86075949367 <br />Normalized Temp.: -0.346234099106957 <br />Unnormalized Temp. C.: -0.597646626345333","Category: Avg Winter Temp. <br />Year: 2009.3417721519 <br />Normalized Temp.: -0.335842029625595 <br />Unnormalized Temp. C.: -0.583193582932659","Category: Avg Winter Temp. <br />Year: 2009.82278481013 <br />Normalized Temp.: -0.321704963483385 <br />Unnormalized Temp. C.: -0.563532087111482","Category: Avg Winter Temp. <br />Year: 2010.30379746835 <br />Normalized Temp.: -0.303919100864439 <br />Unnormalized Temp. C.: -0.538795931813011","Category: Avg Winter Temp. <br />Year: 2010.78481012658 <br />Normalized Temp.: -0.281950986816157 <br />Unnormalized Temp. C.: -0.508243200559259","Category: Avg Winter Temp. <br />Year: 2011.26582278481 <br />Normalized Temp.: -0.255267166385962 <br />Unnormalized Temp. C.: -0.471131976872268","Category: Avg Winter Temp. <br />Year: 2011.74683544304 <br />Normalized Temp.: -0.223334184621272 <br />Unnormalized Temp. C.: -0.426720344274074","Category: Avg Winter Temp. <br />Year: 2012.22784810127 <br />Normalized Temp.: -0.185618586569504 <br />Unnormalized Temp. C.: -0.374266386286709","Category: Avg Winter Temp. <br />Year: 2012.70886075949 <br />Normalized Temp.: -0.141586917278074 <br />Unnormalized Temp. C.: -0.313028186432209","Category: Avg Winter Temp. <br />Year: 2013.18987341772 <br />Normalized Temp.: -0.0907057217944 <br />Unnormalized Temp. C.: -0.242263828232608","Category: Avg Winter Temp. <br />Year: 2013.67088607595 <br />Normalized Temp.: -0.0324415451659271 <br />Unnormalized Temp. C.: -0.161231395209979","Category: Avg Winter Temp. <br />Year: 2014.15189873418 <br />Normalized Temp.: 0.0337125369193876 <br />Unnormalized Temp. C.: -0.0692258690710913","Category: Avg Winter Temp. <br />Year: 2014.63291139241 <br />Normalized Temp.: 0.107657130361698 <br />Unnormalized Temp. C.: 0.0336145152306984","Category: Avg Winter Temp. <br />Year: 2015.11392405063 <br />Normalized Temp.: 0.188996465685285 <br />Unnormalized Temp. C.: 0.14673933090848","Category: Avg Winter Temp. <br />Year: 2015.59493670886 <br />Normalized Temp.: 0.277391222611705 <br />Unnormalized Temp. C.: 0.269676659378188","Category: Avg Winter Temp. <br />Year: 2016.07594936709 <br />Normalized Temp.: 0.372502080862514 <br />Unnormalized Temp. C.: 0.401954582055757","Category: Avg Winter Temp. <br />Year: 2016.55696202532 <br />Normalized Temp.: 0.473989720159218 <br />Unnormalized Temp. C.: 0.543101180357055","Category: Avg Winter Temp. <br />Year: 2017.03797468354 <br />Normalized Temp.: 0.581514820223471 <br />Unnormalized Temp. C.: 0.692644535698148","Category: Avg Winter Temp. <br />Year: 2017.51898734177 <br />Normalized Temp.: 0.694738060776781 <br />Unnormalized Temp. C.: 0.850112729494909","Category: Avg Winter Temp. <br />Year: 2018 <br />Normalized Temp.: 0.813320121540705 <br />Unnormalized Temp. C.: 1.01503384316327"],"type":"scatter","mode":"lines","name":"Avg Winter Temp.","line":{"width":3.7795275590551185,"color":"rgba(76,178,249,1)","dash":"solid"},"hoveron":"points","legendgroup":"Avg Winter Temp.","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1980,1980.4810126582279,1980.9620253164558,1981.4430379746836,1981.9240506329113,1982.4050632911392,1982.8860759493671,1983.367088607595,1983.8481012658228,1984.3291139240507,1984.8101265822784,1985.2911392405063,1985.7721518987341,1986.253164556962,1986.7341772151899,1987.2151898734178,1987.6962025316457,1988.1772151898733,1988.6582278481012,1989.1392405063291,1989.620253164557,1990.1012658227849,1990.5822784810127,1991.0632911392406,1991.5443037974683,1992.0253164556962,1992.506329113924,1992.9873417721519,1993.4683544303798,1993.9493670886077,1994.4303797468353,1994.9113924050632,1995.3924050632911,1995.873417721519,1996.3544303797469,1996.8354430379748,1997.3164556962026,1997.7974683544303,1998.2784810126582,1998.7594936708861,1999.2405063291139,1999.7215189873418,2000.2025316455697,2000.6835443037974,2001.1645569620252,2001.6455696202531,2002.126582278481,2002.6075949367089,2003.0886075949368,2003.5696202531647,2004.0506329113923,2004.5316455696202,2005.0126582278481,2005.493670886076,2005.9746835443038,2006.4556962025317,2006.9367088607596,2007.4177215189873,2007.8987341772151,2008.379746835443,2008.8607594936709,2009.3417721518988,2009.8227848101267,2010.3037974683543,2010.7848101265822,2011.2658227848101,2011.746835443038,2012.2278481012659,2012.7088607594937,2013.1898734177216,2013.6708860759493,2014.1518987341772,2014.632911392405,2015.1139240506329,2015.5949367088608,2016.0759493670887,2016.5569620253164,2017.0379746835442,2017.5189873417721,2018],"y":[0.3755415545722709,0.298595742388509,0.22510340689340547,0.15515140551846485,0.088826595695221583,0.026215834855117408,-0.032594019570311078,-0.087516110149559706,-0.138463579451124,-0.18536767718633362,-0.22829293784761884,-0.26735604670541102,-0.30267320685442278,-0.33436062138938782,-0.36253449340504001,-0.38731102599611311,-0.40880642225734093,-0.42713688528344929,-0.4424186181691892,-0.45454023024039752,-0.46004749456577987,-0.45855434643305798,-0.45112575712859759,-0.43882669793876489,-0.42272214014993381,-0.40387705504845484,-0.38335641392070069,-0.36222518805303716,-0.34154834873183015,-0.32239086724344568,-0.30220237811330947,-0.2767357691189361,-0.24709710235449855,-0.21444264778056549,-0.17992867535770513,-0.14471145504648605,-0.10994725680747659,-0.076792350601260412,-0.046403006388374093,-0.019935494129402306,0.0022436328962210355,0.024036224966312979,0.045893046966584944,0.067510682674001413,0.088585715865557524,0.10881473031821755,0.12789430980895608,0.1455210381147477,0.16139149901256702,0.17520227627938859,0.18665836754303386,0.19645406695149759,0.20529958412063606,0.21335969707289756,0.22079918383073008,0.22778282241658171,0.23447539085290064,0.2410416671621318,0.2476464293667294,0.25445445548913842,0.26163052355180705,0.26896638257566807,0.2755383295410696,0.28135694770673497,0.28649342897345953,0.29101896524202986,0.29500474841323582,0.29852197038786704,0.30164182306671339,0.30443549835056444,0.30697418814020888,0.30933005683962322,0.3115544085624915,0.31361483022817865,0.31546518926865608,0.317059353115895,0.31835118920186634,0.31929456495854258,0.31984334781789447,0.31995140521189336],"text":["Category: Max Summer Temp. <br />Year: 1980 <br />Normalized Temp.: 0.375541554572271 <br />Unnormalized Temp. C.: 36.3737903833744","Category: Max Summer Temp. <br />Year: 1980.48101265823 <br />Normalized Temp.: 0.298595742388509 <br />Unnormalized Temp. C.: 36.2779741543694","Category: Max Summer Temp. <br />Year: 1980.96202531646 <br />Normalized Temp.: 0.225103406893405 <br />Unnormalized Temp. C.: 36.1864583428125","Category: Max Summer Temp. <br />Year: 1981.44303797468 <br />Normalized Temp.: 0.155151405518465 <br />Unnormalized Temp. C.: 36.0993511073064","Category: Max Summer Temp. <br />Year: 1981.92405063291 <br />Normalized Temp.: 0.0888265956952216 <br />Unnormalized Temp. C.: 36.0167606064542","Category: Max Summer Temp. <br />Year: 1982.40506329114 <br />Normalized Temp.: 0.0262158348551174 <br />Unnormalized Temp. C.: 35.9387949988588","Category: Max Summer Temp. <br />Year: 1982.88607594937 <br />Normalized Temp.: -0.0325940195703111 <br />Unnormalized Temp. C.: 35.8655624431231","Category: Max Summer Temp. <br />Year: 1983.36708860759 <br />Normalized Temp.: -0.0875161101495597 <br />Unnormalized Temp. C.: 35.7971710978501","Category: Max Summer Temp. <br />Year: 1983.84810126582 <br />Normalized Temp.: -0.138463579451124 <br />Unnormalized Temp. C.: 35.7337291216427","Category: Max Summer Temp. <br />Year: 1984.32911392405 <br />Normalized Temp.: -0.185367677186334 <br />Unnormalized Temp. C.: 35.6753221253121","Category: Max Summer Temp. <br />Year: 1984.81012658228 <br />Normalized Temp.: -0.228292937847619 <br />Unnormalized Temp. C.: 35.6218697477377","Category: Max Summer Temp. <br />Year: 1985.29113924051 <br />Normalized Temp.: -0.267356046705411 <br />Unnormalized Temp. C.: 35.5732266874107","Category: Max Summer Temp. <br />Year: 1985.77215189873 <br />Normalized Temp.: -0.302673206854423 <br />Unnormalized Temp. C.: 35.5292482432484","Category: Max Summer Temp. <br />Year: 1986.25316455696 <br />Normalized Temp.: -0.334360621389388 <br />Unnormalized Temp. C.: 35.4897897141682","Category: Max Summer Temp. <br />Year: 1986.73417721519 <br />Normalized Temp.: -0.36253449340504 <br />Unnormalized Temp. C.: 35.4547063990872","Category: Max Summer Temp. <br />Year: 1987.21518987342 <br />Normalized Temp.: -0.387311025996113 <br />Unnormalized Temp. C.: 35.4238535969226","Category: Max Summer Temp. <br />Year: 1987.69620253165 <br />Normalized Temp.: -0.408806422257341 <br />Unnormalized Temp. C.: 35.3970866065918","Category: Max Summer Temp. <br />Year: 1988.17721518987 <br />Normalized Temp.: -0.427136885283449 <br />Unnormalized Temp. C.: 35.374260727012","Category: Max Summer Temp. <br />Year: 1988.6582278481 <br />Normalized Temp.: -0.442418618169189 <br />Unnormalized Temp. C.: 35.3552312571004","Category: Max Summer Temp. <br />Year: 1989.13924050633 <br />Normalized Temp.: -0.454540230240398 <br />Unnormalized Temp. C.: 35.3401369053071","Category: Max Summer Temp. <br />Year: 1989.62025316456 <br />Normalized Temp.: -0.46004749456578 <br />Unnormalized Temp. C.: 35.3332790233144","Category: Max Summer Temp. <br />Year: 1990.10126582278 <br />Normalized Temp.: -0.458554346433058 <br />Unnormalized Temp. C.: 35.3351383554777","Category: Max Summer Temp. <br />Year: 1990.58227848101 <br />Normalized Temp.: -0.451125757128598 <br />Unnormalized Temp. C.: 35.3443887538266","Category: Max Summer Temp. <br />Year: 1991.06329113924 <br />Normalized Temp.: -0.438826697938765 <br />Unnormalized Temp. C.: 35.3597040703907","Category: Max Summer Temp. <br />Year: 1991.54430379747 <br />Normalized Temp.: -0.422722140149934 <br />Unnormalized Temp. C.: 35.3797581571997","Category: Max Summer Temp. <br />Year: 1992.0253164557 <br />Normalized Temp.: -0.403877055048455 <br />Unnormalized Temp. C.: 35.403224866283","Category: Max Summer Temp. <br />Year: 1992.50632911392 <br />Normalized Temp.: -0.383356413920701 <br />Unnormalized Temp. C.: 35.4287780496705","Category: Max Summer Temp. <br />Year: 1992.98734177215 <br />Normalized Temp.: -0.362225188053037 <br />Unnormalized Temp. C.: 35.4550915593915","Category: Max Summer Temp. <br />Year: 1993.46835443038 <br />Normalized Temp.: -0.34154834873183 <br />Unnormalized Temp. C.: 35.4808392474758","Category: Max Summer Temp. <br />Year: 1993.94936708861 <br />Normalized Temp.: -0.322390867243446 <br />Unnormalized Temp. C.: 35.5046949659529","Category: Max Summer Temp. <br />Year: 1994.43037974684 <br />Normalized Temp.: -0.302202378113309 <br />Unnormalized Temp. C.: 35.5298345394119","Category: Max Summer Temp. <br />Year: 1994.91139240506 <br />Normalized Temp.: -0.276735769118936 <br />Unnormalized Temp. C.: 35.5615466543423","Category: Max Summer Temp. <br />Year: 1995.39240506329 <br />Normalized Temp.: -0.247097102354499 <br />Unnormalized Temp. C.: 35.5984539947356","Category: Max Summer Temp. <br />Year: 1995.87341772152 <br />Normalized Temp.: -0.214442647780565 <br />Unnormalized Temp. C.: 35.6391167235923","Category: Max Summer Temp. <br />Year: 1996.35443037975 <br />Normalized Temp.: -0.179928675357705 <br />Unnormalized Temp. C.: 35.682095003913","Category: Max Summer Temp. <br />Year: 1996.83544303797 <br />Normalized Temp.: -0.144711455046486 <br />Unnormalized Temp. C.: 35.7259489986983","Category: Max Summer Temp. <br />Year: 1997.3164556962 <br />Normalized Temp.: -0.109947256807477 <br />Unnormalized Temp. C.: 35.7692388709488","Category: Max Summer Temp. <br />Year: 1997.79746835443 <br />Normalized Temp.: -0.0767923506012604 <br />Unnormalized Temp. C.: 35.810524783665","Category: Max Summer Temp. <br />Year: 1998.27848101266 <br />Normalized Temp.: -0.0464030063883741 <br />Unnormalized Temp. C.: 35.8483668998474","Category: Max Summer Temp. <br />Year: 1998.75949367089 <br />Normalized Temp.: -0.0199354941294023 <br />Unnormalized Temp. C.: 35.8813253824968","Category: Max Summer Temp. <br />Year: 1999.24050632911 <br />Normalized Temp.: 0.00224363289622104 <br />Unnormalized Temp. C.: 35.9089437837314","Category: Max Summer Temp. <br />Year: 1999.72151898734 <br />Normalized Temp.: 0.024036224966313 <br />Unnormalized Temp. C.: 35.9360808550435","Category: Max Summer Temp. <br />Year: 2000.20253164557 <br />Normalized Temp.: 0.0458930469665849 <br />Unnormalized Temp. C.: 35.9632979082224","Category: Max Summer Temp. <br />Year: 2000.6835443038 <br />Normalized Temp.: 0.0675106826740014 <br />Unnormalized Temp. C.: 35.99021711636","Category: Max Summer Temp. <br />Year: 2001.16455696203 <br />Normalized Temp.: 0.0885857158655575 <br />Unnormalized Temp. C.: 36.0164606525481","Category: Max Summer Temp. <br />Year: 2001.64556962025 <br />Normalized Temp.: 0.108814730318218 <br />Unnormalized Temp. C.: 36.0416506898787","Category: Max Summer Temp. <br />Year: 2002.12658227848 <br />Normalized Temp.: 0.127894309808956 <br />Unnormalized Temp. C.: 36.0654094014436","Category: Max Summer Temp. <br />Year: 2002.60759493671 <br />Normalized Temp.: 0.145521038114748 <br />Unnormalized Temp. C.: 36.0873589603348","Category: Max Summer Temp. <br />Year: 2003.08860759494 <br />Normalized Temp.: 0.161391499012567 <br />Unnormalized Temp. C.: 36.1071215396441","Category: Max Summer Temp. <br />Year: 2003.56962025316 <br />Normalized Temp.: 0.175202276279389 <br />Unnormalized Temp. C.: 36.1243193124634","Category: Max Summer Temp. <br />Year: 2004.05063291139 <br />Normalized Temp.: 0.186658367543034 <br />Unnormalized Temp. C.: 36.1385849291729","Category: Max Summer Temp. <br />Year: 2004.53164556962 <br />Normalized Temp.: 0.196454066951498 <br />Unnormalized Temp. C.: 36.1507829546554","Category: Max Summer Temp. <br />Year: 2005.01265822785 <br />Normalized Temp.: 0.205299584120636 <br />Unnormalized Temp. C.: 36.1617977724173","Category: Max Summer Temp. <br />Year: 2005.49367088608 <br />Normalized Temp.: 0.213359697072898 <br />Unnormalized Temp. C.: 36.1718345711269","Category: Max Summer Temp. <br />Year: 2005.9746835443 <br />Normalized Temp.: 0.22079918383073 <br />Unnormalized Temp. C.: 36.1810985394527","Category: Max Summer Temp. <br />Year: 2006.45569620253 <br />Normalized Temp.: 0.227782822416582 <br />Unnormalized Temp. C.: 36.1897948660628","Category: Max Summer Temp. <br />Year: 2006.93670886076 <br />Normalized Temp.: 0.234475390852901 <br />Unnormalized Temp. C.: 36.1981287396256","Category: Max Summer Temp. <br />Year: 2007.41772151899 <br />Normalized Temp.: 0.241041667162132 <br />Unnormalized Temp. C.: 36.2063053488093","Category: Max Summer Temp. <br />Year: 2007.89873417722 <br />Normalized Temp.: 0.247646429366729 <br />Unnormalized Temp. C.: 36.2145298822824","Category: Max Summer Temp. <br />Year: 2008.37974683544 <br />Normalized Temp.: 0.254454455489138 <br />Unnormalized Temp. C.: 36.2230075287131","Category: Max Summer Temp. <br />Year: 2008.86075949367 <br />Normalized Temp.: 0.261630523551807 <br />Unnormalized Temp. C.: 36.2319434767697","Category: Max Summer Temp. <br />Year: 2009.3417721519 <br />Normalized Temp.: 0.268966382575668 <br />Unnormalized Temp. C.: 36.2410784033918","Category: Max Summer Temp. <br />Year: 2009.82278481013 <br />Normalized Temp.: 0.27553832954107 <br />Unnormalized Temp. C.: 36.2492620739202","Category: Max Summer Temp. <br />Year: 2010.30379746835 <br />Normalized Temp.: 0.281356947706735 <br />Unnormalized Temp. C.: 36.2565076670828","Category: Max Summer Temp. <br />Year: 2010.78481012658 <br />Normalized Temp.: 0.28649342897346 <br />Unnormalized Temp. C.: 36.2629038340913","Category: Max Summer Temp. <br />Year: 2011.26582278481 <br />Normalized Temp.: 0.29101896524203 <br />Unnormalized Temp. C.: 36.2685392261572","Category: Max Summer Temp. <br />Year: 2011.74683544304 <br />Normalized Temp.: 0.295004748413236 <br />Unnormalized Temp. C.: 36.2735024944918","Category: Max Summer Temp. <br />Year: 2012.22784810127 <br />Normalized Temp.: 0.298521970387867 <br />Unnormalized Temp. C.: 36.2778822903068","Category: Max Summer Temp. <br />Year: 2012.70886075949 <br />Normalized Temp.: 0.301641823066713 <br />Unnormalized Temp. C.: 36.2817672648136","Category: Max Summer Temp. <br />Year: 2013.18987341772 <br />Normalized Temp.: 0.304435498350564 <br />Unnormalized Temp. C.: 36.2852460692237","Category: Max Summer Temp. <br />Year: 2013.67088607595 <br />Normalized Temp.: 0.306974188140209 <br />Unnormalized Temp. C.: 36.2884073547486","Category: Max Summer Temp. <br />Year: 2014.15189873418 <br />Normalized Temp.: 0.309330056839623 <br />Unnormalized Temp. C.: 36.2913409836025","Category: Max Summer Temp. <br />Year: 2014.63291139241 <br />Normalized Temp.: 0.311554408562492 <br />Unnormalized Temp. C.: 36.2941108418705","Category: Max Summer Temp. <br />Year: 2015.11392405063 <br />Normalized Temp.: 0.313614830228179 <br />Unnormalized Temp. C.: 36.2966765673929","Category: Max Summer Temp. <br />Year: 2015.59493670886 <br />Normalized Temp.: 0.315465189268656 <br />Unnormalized Temp. C.: 36.2989807139154","Category: Max Summer Temp. <br />Year: 2016.07594936709 <br />Normalized Temp.: 0.317059353115895 <br />Unnormalized Temp. C.: 36.3009658351835","Category: Max Summer Temp. <br />Year: 2016.55696202532 <br />Normalized Temp.: 0.318351189201866 <br />Unnormalized Temp. C.: 36.3025744849429","Category: Max Summer Temp. <br />Year: 2017.03797468354 <br />Normalized Temp.: 0.319294564958543 <br />Unnormalized Temp. C.: 36.303749216939","Category: Max Summer Temp. <br />Year: 2017.51898734177 <br />Normalized Temp.: 0.319843347817894 <br />Unnormalized Temp. C.: 36.3044325849175","Category: Max Summer Temp. <br />Year: 2018 <br />Normalized Temp.: 0.319951405211893 <br />Unnormalized Temp. C.: 36.3045671426239"],"type":"scatter","mode":"lines","name":"Max Summer Temp.","line":{"width":3.7795275590551185,"color":"rgba(235,0,28,1)","dash":"solid"},"hoveron":"points","legendgroup":"Max Summer Temp.","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1980,1980.4810126582279,1980.9620253164558,1981.4430379746836,1981.9240506329113,1982.4050632911392,1982.8860759493671,1983.367088607595,1983.8481012658228,1984.3291139240507,1984.8101265822784,1985.2911392405063,1985.7721518987341,1986.253164556962,1986.7341772151899,1987.2151898734178,1987.6962025316457,1988.1772151898733,1988.6582278481012,1989.1392405063291,1989.620253164557,1990.1012658227849,1990.5822784810127,1991.0632911392406,1991.5443037974683,1992.0253164556962,1992.506329113924,1992.9873417721519,1993.4683544303798,1993.9493670886077,1994.4303797468353,1994.9113924050632,1995.3924050632911,1995.873417721519,1996.3544303797469,1996.8354430379748,1997.3164556962026,1997.7974683544303,1998.2784810126582,1998.7594936708861,1999.2405063291139,1999.7215189873418,2000.2025316455697,2000.6835443037974,2001.1645569620252,2001.6455696202531,2002.126582278481,2002.6075949367089,2003.0886075949368,2003.5696202531647,2004.0506329113923,2004.5316455696202,2005.0126582278481,2005.493670886076,2005.9746835443038,2006.4556962025317,2006.9367088607596,2007.4177215189873,2007.8987341772151,2008.379746835443,2008.8607594936709,2009.3417721518988,2009.8227848101267,2010.3037974683543,2010.7848101265822,2011.2658227848101,2011.746835443038,2012.2278481012659,2012.7088607594937,2013.1898734177216,2013.6708860759493,2014.1518987341772,2014.632911392405,2015.1139240506329,2015.5949367088608,2016.0759493670887,2016.5569620253164,2017.0379746835442,2017.5189873417721,2018],"y":[0.73979879713825514,0.63575895478166877,0.53672862109781683,0.44306374276719829,0.35512026647035211,0.27325413888769473,0.19782130669976805,0.12917771658707125,0.067679315230103551,0.013796643339271136,-0.03221577088181829,-0.070917726560362077,-0.10290932335289543,-0.12879066091597696,-0.14916183890616544,-0.16462295698001955,-0.17577411479409799,-0.18321541200495678,-0.1875469482691613,-0.18872830785036052,-0.17714263283216211,-0.15141888366048092,-0.11421843171492846,-0.068202648375116387,-0.01603290502068197,0.039629426968813705,0.0961229762137355,0.15078637133447184,0.20095824095141124,0.24397721368494207,0.2880348142353984,0.34574319957016009,0.41319520993650838,0.4863308896907847,0.56109028318933063,0.63341343478848688,0.6992403888445955,0.75451118971397446,0.79516588175301917,0.81714450931804195,0.81657465327558654,0.79342811085480325,0.75126027155186659,0.69376193655406759,0.62462390704861093,0.54753698422278152,0.46619196926383966,0.3842796633590464,0.30549086769566219,0.23351638346094775,0.1719018247256264,0.10865560745233076,0.036506036426494526,-0.041401599780714574,-0.12192201259812879,-0.20190991345458048,-0.27822001377890182,-0.34770702499989448,-0.40722565854645748,-0.45363062584738845,-0.48377663833151985,-0.49923792941372536,-0.51130891260670575,-0.52014658518999635,-0.5251602717362962,-0.52575929681829092,-0.52135298500867056,-0.51135066088012615,-0.49516164900534787,-0.47219527395702615,-0.44186086030786781,-0.40359031362251485,-0.3573994335931342,-0.30370519385808153,-0.2428948662040076,-0.17535572241756267,-0.10147503428543388,-0.021640073594201739,0.063761887869449932,0.15434357831887036],"text":["Category: Min Winter Temp. <br />Year: 1980 <br />Normalized Temp.: 0.739798797138255 <br />Unnormalized Temp. C.: -13.2265900822996","Category: Min Winter Temp. <br />Year: 1980.48101265823 <br />Normalized Temp.: 0.635758954781669 <br />Unnormalized Temp. C.: -13.5521046487489","Category: Min Winter Temp. <br />Year: 1980.96202531646 <br />Normalized Temp.: 0.536728621097817 <br />Unnormalized Temp. C.: -13.8619457192875","Category: Min Winter Temp. <br />Year: 1981.44303797468 <br />Normalized Temp.: 0.443063742767198 <br />Unnormalized Temp. C.: -14.1549996260478","Category: Min Winter Temp. <br />Year: 1981.92405063291 <br />Normalized Temp.: 0.355120266470352 <br />Unnormalized Temp. C.: -14.4301527011621","Category: Min Winter Temp. <br />Year: 1982.40506329114 <br />Normalized Temp.: 0.273254138887695 <br />Unnormalized Temp. C.: -14.6862912767629","Category: Min Winter Temp. <br />Year: 1982.88607594937 <br />Normalized Temp.: 0.197821306699768 <br />Unnormalized Temp. C.: -14.9223016849827","Category: Min Winter Temp. <br />Year: 1983.36708860759 <br />Normalized Temp.: 0.129177716587071 <br />Unnormalized Temp. C.: -15.1370702579538","Category: Min Winter Temp. <br />Year: 1983.84810126582 <br />Normalized Temp.: 0.0676793152301036 <br />Unnormalized Temp. C.: -15.3294833278086","Category: Min Winter Temp. <br />Year: 1984.32911392405 <br />Normalized Temp.: 0.0137966433392711 <br />Unnormalized Temp. C.: -15.4980686907079","Category: Min Winter Temp. <br />Year: 1984.81012658228 <br />Normalized Temp.: -0.0322157708818183 <br />Unnormalized Temp. C.: -15.6420299917557","Category: Min Winter Temp. <br />Year: 1985.29113924051 <br />Normalized Temp.: -0.0709177265603621 <br />Unnormalized Temp. C.: -15.7631187019852","Category: Min Winter Temp. <br />Year: 1985.77215189873 <br />Normalized Temp.: -0.102909323352895 <br />Unnormalized Temp. C.: -15.8632123826759","Category: Min Winter Temp. <br />Year: 1986.25316455696 <br />Normalized Temp.: -0.128790660915977 <br />Unnormalized Temp. C.: -15.9441885951071","Category: Min Winter Temp. <br />Year: 1986.73417721519 <br />Normalized Temp.: -0.149161838906165 <br />Unnormalized Temp. C.: -16.0079249005583","Category: Min Winter Temp. <br />Year: 1987.21518987342 <br />Normalized Temp.: -0.16462295698002 <br />Unnormalized Temp. C.: -16.056298860309","Category: Min Winter Temp. <br />Year: 1987.69620253165 <br />Normalized Temp.: -0.175774114794098 <br />Unnormalized Temp. C.: -16.0911880356388","Category: Min Winter Temp. <br />Year: 1988.17721518987 <br />Normalized Temp.: -0.183215412004957 <br />Unnormalized Temp. C.: -16.114469987827","Category: Min Winter Temp. <br />Year: 1988.6582278481 <br />Normalized Temp.: -0.187546948269161 <br />Unnormalized Temp. C.: -16.1280222781531","Category: Min Winter Temp. <br />Year: 1989.13924050633 <br />Normalized Temp.: -0.188728307850361 <br />Unnormalized Temp. C.: -16.1317184559172","Category: Min Winter Temp. <br />Year: 1989.62025316456 <br />Normalized Temp.: -0.177142632832162 <br />Unnormalized Temp. C.: -16.0954697852623","Category: Min Winter Temp. <br />Year: 1990.10126582278 <br />Normalized Temp.: -0.151418883660481 <br />Unnormalized Temp. C.: -16.0149866273739","Category: Min Winter Temp. <br />Year: 1990.58227848101 <br />Normalized Temp.: -0.114218431714928 <br />Unnormalized Temp. C.: -15.8985957456454","Category: Min Winter Temp. <br />Year: 1991.06329113924 <br />Normalized Temp.: -0.0682026483751164 <br />Unnormalized Temp. C.: -15.7546239034703","Category: Min Winter Temp. <br />Year: 1991.54430379747 <br />Normalized Temp.: -0.016032905020682 <br />Unnormalized Temp. C.: -15.5913978642421","Category: Min Winter Temp. <br />Year: 1992.0253164557 <br />Normalized Temp.: 0.0396294269688137 <br />Unnormalized Temp. C.: -15.4172443913541","Category: Min Winter Temp. <br />Year: 1992.50632911392 <br />Normalized Temp.: 0.0961229762137355 <br />Unnormalized Temp. C.: -15.2404902481998","Category: Min Winter Temp. <br />Year: 1992.98734177215 <br />Normalized Temp.: 0.150786371334472 <br />Unnormalized Temp. C.: -15.0694621981727","Category: Min Winter Temp. <br />Year: 1993.46835443038 <br />Normalized Temp.: 0.200958240951411 <br />Unnormalized Temp. C.: -14.9124870046662","Category: Min Winter Temp. <br />Year: 1993.94936708861 <br />Normalized Temp.: 0.243977213684942 <br />Unnormalized Temp. C.: -14.7778914310738","Category: Min Winter Temp. <br />Year: 1994.43037974684 <br />Normalized Temp.: 0.288034814235398 <br />Unnormalized Temp. C.: -14.6400462516009","Category: Min Winter Temp. <br />Year: 1994.91139240506 <br />Normalized Temp.: 0.34574319957016 <br />Unnormalized Temp. C.: -14.4594911910852","Category: Min Winter Temp. <br />Year: 1995.39240506329 <br />Normalized Temp.: 0.413195209936508 <br />Unnormalized Temp. C.: -14.248450772211","Category: Min Winter Temp. <br />Year: 1995.87341772152 <br />Normalized Temp.: 0.486330889690785 <br />Unnormalized Temp. C.: -14.0196275776737","Category: Min Winter Temp. <br />Year: 1996.35443037975 <br />Normalized Temp.: 0.561090283189331 <br />Unnormalized Temp. C.: -13.7857241901687","Category: Min Winter Temp. <br />Year: 1996.83544303797 <br />Normalized Temp.: 0.633413434788487 <br />Unnormalized Temp. C.: -13.5594431923913","Category: Min Winter Temp. <br />Year: 1997.3164556962 <br />Normalized Temp.: 0.699240388844595 <br />Unnormalized Temp. C.: -13.353487167037","Category: Min Winter Temp. <br />Year: 1997.79746835443 <br />Normalized Temp.: 0.754511189713974 <br />Unnormalized Temp. C.: -13.1805586968011","Category: Min Winter Temp. <br />Year: 1998.27848101266 <br />Normalized Temp.: 0.795165881753019 <br />Unnormalized Temp. C.: -13.053360364379","Category: Min Winter Temp. <br />Year: 1998.75949367089 <br />Normalized Temp.: 0.817144509318042 <br />Unnormalized Temp. C.: -12.984594752466","Category: Min Winter Temp. <br />Year: 1999.24050632911 <br />Normalized Temp.: 0.816574653275587 <br />Unnormalized Temp. C.: -12.9863776890641","Category: Min Winter Temp. <br />Year: 1999.72151898734 <br />Normalized Temp.: 0.793428110854803 <br />Unnormalized Temp. C.: -13.0587974135681","Category: Min Winter Temp. <br />Year: 2000.20253164557 <br />Normalized Temp.: 0.751260271551867 <br />Unnormalized Temp. C.: -13.1907300041785","Category: Min Winter Temp. <br />Year: 2000.6835443038 <br />Normalized Temp.: 0.693761936554068 <br />Unnormalized Temp. C.: -13.3706278698848","Category: Min Winter Temp. <br />Year: 2001.16455696203 <br />Normalized Temp.: 0.624623907048611 <br />Unnormalized Temp. C.: -13.5869434196767","Category: Min Winter Temp. <br />Year: 2001.64556962025 <br />Normalized Temp.: 0.547536984222782 <br />Unnormalized Temp. C.: -13.8281290625438","Category: Min Winter Temp. <br />Year: 2002.12658227848 <br />Normalized Temp.: 0.46619196926384 <br />Unnormalized Temp. C.: -14.0826372074756","Category: Min Winter Temp. <br />Year: 2002.60759493671 <br />Normalized Temp.: 0.384279663359046 <br />Unnormalized Temp. C.: -14.3389202634617","Category: Min Winter Temp. <br />Year: 2003.08860759494 <br />Normalized Temp.: 0.305490867695662 <br />Unnormalized Temp. C.: -14.5854306394918","Category: Min Winter Temp. <br />Year: 2003.56962025316 <br />Normalized Temp.: 0.233516383460948 <br />Unnormalized Temp. C.: -14.8106207445554","Category: Min Winter Temp. <br />Year: 2004.05063291139 <br />Normalized Temp.: 0.171901824725626 <br />Unnormalized Temp. C.: -15.0033972417068","Category: Min Winter Temp. <br />Year: 2004.53164556962 <br />Normalized Temp.: 0.108655607452331 <br />Unnormalized Temp. C.: -15.2012787890925","Category: Min Winter Temp. <br />Year: 2005.01265822785 <br />Normalized Temp.: 0.0365060364264945 <br />Unnormalized Temp. C.: -15.4270166968017","Category: Min Winter Temp. <br />Year: 2005.49367088608 <br />Normalized Temp.: -0.0414015997807146 <br />Unnormalized Temp. C.: -15.6707701459483","Category: Min Winter Temp. <br />Year: 2005.9746835443 <br />Normalized Temp.: -0.121922012598129 <br />Unnormalized Temp. C.: -15.9226983176457","Category: Min Winter Temp. <br />Year: 2006.45569620253 <br />Normalized Temp.: -0.20190991345458 <br />Unnormalized Temp. C.: -16.1729603930076","Category: Min Winter Temp. <br />Year: 2006.93670886076 <br />Normalized Temp.: -0.278220013778902 <br />Unnormalized Temp. C.: -16.4117155531475","Category: Min Winter Temp. <br />Year: 2007.41772151899 <br />Normalized Temp.: -0.347707024999894 <br />Unnormalized Temp. C.: -16.6291229791789","Category: Min Winter Temp. <br />Year: 2007.89873417722 <br />Normalized Temp.: -0.407225658546457 <br />Unnormalized Temp. C.: -16.8153418522156","Category: Min Winter Temp. <br />Year: 2008.37974683544 <br />Normalized Temp.: -0.453630625847388 <br />Unnormalized Temp. C.: -16.9605313533712","Category: Min Winter Temp. <br />Year: 2008.86075949367 <br />Normalized Temp.: -0.48377663833152 <br />Unnormalized Temp. C.: -17.0548506637592","Category: Min Winter Temp. <br />Year: 2009.3417721519 <br />Normalized Temp.: -0.499237929413725 <br />Unnormalized Temp. C.: -17.1032251648097","Category: Min Winter Temp. <br />Year: 2009.82278481013 <br />Normalized Temp.: -0.511308912606706 <br />Unnormalized Temp. C.: -17.1409922429951","Category: Min Winter Temp. <br />Year: 2010.30379746835 <br />Normalized Temp.: -0.520146585189996 <br />Unnormalized Temp. C.: -17.1686431034175","Category: Min Winter Temp. <br />Year: 2010.78481012658 <br />Normalized Temp.: -0.525160271736296 <br />Unnormalized Temp. C.: -17.1843296708465","Category: Min Winter Temp. <br />Year: 2011.26582278481 <br />Normalized Temp.: -0.525759296818291 <br />Unnormalized Temp. C.: -17.1862038700518","Category: Min Winter Temp. <br />Year: 2011.74683544304 <br />Normalized Temp.: -0.521352985008671 <br />Unnormalized Temp. C.: -17.1724176258028","Category: Min Winter Temp. <br />Year: 2012.22784810127 <br />Normalized Temp.: -0.511350660880126 <br />Unnormalized Temp. C.: -17.1411228628693","Category: Min Winter Temp. <br />Year: 2012.70886075949 <br />Normalized Temp.: -0.495161649005348 <br />Unnormalized Temp. C.: -17.0904715060209","Category: Min Winter Temp. <br />Year: 2013.18987341772 <br />Normalized Temp.: -0.472195273957026 <br />Unnormalized Temp. C.: -17.0186154800271","Category: Min Winter Temp. <br />Year: 2013.67088607595 <br />Normalized Temp.: -0.441860860307868 <br />Unnormalized Temp. C.: -16.9237067096576","Category: Min Winter Temp. <br />Year: 2014.15189873418 <br />Normalized Temp.: -0.403590313622515 <br />Unnormalized Temp. C.: -16.803967769941","Category: Min Winter Temp. <br />Year: 2014.63291139241 <br />Normalized Temp.: -0.357399433593134 <br />Unnormalized Temp. C.: -16.6594480941504","Category: Min Winter Temp. <br />Year: 2015.11392405063 <br />Normalized Temp.: -0.303705193858082 <br />Unnormalized Temp. C.: -16.4914522881948","Category: Min Winter Temp. <br />Year: 2015.59493670886 <br />Normalized Temp.: -0.242894866204008 <br />Unnormalized Temp. C.: -16.3011920283406","Category: Min Winter Temp. <br />Year: 2016.07594936709 <br />Normalized Temp.: -0.175355722417563 <br />Unnormalized Temp. C.: -16.0898789908539","Category: Min Winter Temp. <br />Year: 2016.55696202532 <br />Normalized Temp.: -0.101475034285434 <br />Unnormalized Temp. C.: -15.8587248520012","Category: Min Winter Temp. <br />Year: 2017.03797468354 <br />Normalized Temp.: -0.0216400735942017 <br />Unnormalized Temp. C.: -15.6089412880485","Category: Min Winter Temp. <br />Year: 2017.51898734177 <br />Normalized Temp.: 0.0637618878694499 <br />Unnormalized Temp. C.: -15.3417399752622","Category: Min Winter Temp. <br />Year: 2018 <br />Normalized Temp.: 0.15434357831887 <br />Unnormalized Temp. C.: -15.0583325899085"],"type":"scatter","mode":"lines","name":"Min Winter Temp.","line":{"width":3.7795275590551185,"color":"rgba(1,69,237,1)","dash":"solid"},"hoveron":"points","legendgroup":"Min Winter Temp.","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":47.481942714819425,"r":7.3059360730593621,"b":25.570776255707766,"l":34.337899543379002},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"<b> Normalized Temperature by Year <\/b>","font":{"color":"rgba(0,0,0,1)","family":"sans","size":21.253632212536321},"x":0.5,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[1978.0999999999999,2019.9000000000001],"tickmode":"array","ticktext":["1980","1990","2000","2010"],"tickvals":[1980,1990,2000,2010],"categoryorder":"array","categoryarray":["1980","1990","2000","2010"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"sans","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(196,196,196,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"Year","font":{"color":"rgba(0,0,0,1)","family":"sans","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.60633830148371359,1.1663998011555843],"tickmode":"array","ticktext":["-0.5","0.0","0.5","1.0"],"tickvals":[-0.5,0,0.5,1],"categoryorder":"array","categoryarray":["-0.5","0.0","0.5","1.0"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"sans","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(196,196,196,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"Normalized Temperature Celcius","font":{"color":"rgba(0,0,0,1)","family":"sans","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"sans","size":11.68949771689498}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"c0c817f629bf":{"x":{},"y":{},"colour":{},"type":"scatter"}},"cur_data":"c0c817f629bf","visdat":{"c0c817f629bf":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>Caption: This graph shows a normalized pattern of weather change in order to compare the difference across the different metrics. The un-normalized value can be found by hovering over each part of the line.</p>
+<p>Since the 1990s, the average and maximum summer temperature has been climbing while the winter values took a steep dip, getting comparatively colder, before climbing again in the most recent decade. Some of the more recent and earliest climbing and falling slopes can be attributed to the model used to smooth out the yearly differences but, as we will see with the future scenarios, warmer summers and winters are expected in the future. Outside of this, the winter and summer temperature groups seem to follow similar behaviors as the averages indicates the maximum or minimum temperature. While occasionally the minimum winter temperature may seem to be higher than the average, this is an effect of the normalization and is not indicative of the weather trends over the years.</p>
+<p>Temperature is one of the pillars that will make up the weather analysis going forward, but another equally important to this story is precipitation and its relationship with the soil.</p>
+</section>
+</section>
+<section id="percipitation-and-water-content" class="level2">
+<h2 class="anchored" data-anchor-id="percipitation-and-water-content">Percipitation and Water Content</h2>
+<p>As mentioned, precipitation becomes an important marker of the amount of water entering the ecosystem and allowing for plant life to flourish or fail. Being in a dry and hot environment, precipitation has added importance in the state park. With this in mind, lets examine the precipitation over time.</p>
+<section id="precipitation-over-time" class="level4">
+<h4 class="anchored" data-anchor-id="precipitation-over-time">Precipitation over Time</h4>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Data preprocessing</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>ppt_chunk <span class="ot">&lt;-</span> total_cleaned <span class="sc">%&gt;%</span> <span class="fu">filter</span>(RCP <span class="sc">==</span> <span class="st">"historical"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>ppt_chunk <span class="ot">&lt;-</span> ppt_chunk[,<span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">18</span><span class="sc">:</span><span class="dv">19</span>)] <span class="sc">%&gt;%</span> <span class="fu">na.omit</span>()</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(ppt_chunk) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"year"</span>, <span class="st">"Winter"</span>, <span class="st">"Summer"</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Taking the average and pivoting for ease of visualization</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>ppt_chunk <span class="ot">&lt;-</span> ppt_chunk <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(year) <span class="sc">%&gt;%</span> <span class="fu">summarise_at</span>(<span class="fu">vars</span>(<span class="st">"Winter"</span>,<span class="st">"Summer"</span>), mean) </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>ppt_chunk <span class="ot">&lt;-</span> ppt_chunk <span class="sc">%&gt;%</span> <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="st">"Winter"</span>,<span class="st">"Summer"</span>))</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Plotting with overlaying geoms</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> ppt_chunk, <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> value, <span class="at">color =</span> name)) <span class="sc">+</span> </span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> F) <span class="sc">+</span> </span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  my_theme <span class="sc">+</span> </span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Year"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Sum of Precipitaion in Centimeters"</span>) <span class="sc">+</span> </span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Precipitation by Year and Season"</span>) <span class="sc">+</span> </span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color=</span><span class="fu">guide_legend</span>(<span class="at">title=</span><span class="st">"Season"</span>)) <span class="sc">+</span> </span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">caption =</span> <span class="st">"Data from the US Geological Survey"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="data_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Caption: This plot shows the year to year and ordinary least squares approximation of the precipitation in each season over the years.</p>
+<p>Remarkably, the precipitation across winter and summer seems remarkably similar, with winter having slightly less centimeters of rain overall. Additionally, the amount of precipitation in the park seems to have stayed consistent over the years being measured. Climate change can change weather patterns but it does not seem to have effected this variable very much. Following this though, the precipitation rate is connected to two other variables: the volume of underground water reservoirs which is outside the scope of this article and the amount of water trapped in the soil. On the latter point, water is not valuable for plants if it sinks past the soil into a reservoir or river so how its captured in the soil becomes and important question. On this point, we will examine the relative capacity of soil to handle water across seasons and time.</p>
+</section>
+<section id="seasonal-volumetric-water-content" class="level4">
+<h4 class="anchored" data-anchor-id="seasonal-volumetric-water-content">Seasonal Volumetric Water Content</h4>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Data preprocessing</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>vwc_chunk <span class="ot">&lt;-</span> total_cleaned <span class="sc">%&gt;%</span> <span class="fu">filter</span>(RCP <span class="sc">==</span> <span class="st">"historical"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>vwc_chunk <span class="ot">&lt;-</span> vwc_chunk[,<span class="fu">c</span>(<span class="dv">24</span><span class="sc">:</span><span class="dv">27</span>)] <span class="sc">%&gt;%</span> <span class="fu">na.omit</span>()</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(vwc_chunk) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"VWC Winter"</span>, <span class="st">"VWC Spring"</span>, <span class="st">"VWC Summer"</span>, <span class="st">"VWC Fall"</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Pivoting and reordering for visualization</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>vwc_chunk <span class="ot">&lt;-</span> vwc_chunk <span class="sc">%&gt;%</span> <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="st">"VWC Winter"</span>, <span class="st">"VWC Spring"</span>, <span class="st">"VWC Summer"</span>, <span class="st">"VWC Fall"</span>))</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>vwc_chunk<span class="sc">$</span>name <span class="ot">&lt;-</span> vwc_chunk<span class="sc">$</span>name <span class="sc">%&gt;%</span> <span class="fu">factor</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"VWC Winter"</span>, <span class="st">"VWC Spring"</span>, <span class="st">"VWC Summer"</span>, <span class="st">"VWC Fall"</span>))</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Plotting with season appropriate colors</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> vwc_chunk, <span class="fu">aes</span>(<span class="at">x =</span> name, <span class="at">y =</span> value, <span class="at">fill =</span> name)) <span class="sc">+</span> </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">guides</span>(<span class="at">fill=</span><span class="fu">guide_legend</span>(<span class="at">title=</span><span class="st">"Season of Value"</span>)) <span class="sc">+</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  my_theme <span class="sc">+</span> </span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Volumetric Water Content by Season"</span>) <span class="sc">+</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Season of Records"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"MedianCubic Meters of Water per Cubic Meter of Soil"</span>) <span class="sc">+</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#42687C"</span>, <span class="st">"#F3A8BC"</span>, <span class="st">"#FFD700"</span>,<span class="st">"#9C2706"</span>)) <span class="sc">+</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">caption =</span> <span class="st">"Data from the US Geological Survey"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="data_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Caption: The boxplots are comparing the distribution of volumetric water content (VWC) across all years by season with the inner box containing the inner two quantiles and the range around it showing the outer two.</p>
+<p>Based on this data, there are clear differences in the amount of water stored in the soil by season; a few reasons for this could be the temperature differences trapping water, an increased amount of rain in fall or spring, or heat in the summer sapping away water reserves through evaporation. The latter point will be examined with another variable, but for the rest of the relationships it seems that there is the most water in the ground during Spring and Fall with Summer allowing the least amount on average. While this is a slice of the behavior, just showing the seasonal difference, I’d also like to approach these variables across the years available in the data.</p>
+</section>
+<section id="seasonal-volumetric-water-content-1980-2018" class="level4">
+<h4 class="anchored" data-anchor-id="seasonal-volumetric-water-content-1980-2018">Seasonal Volumetric Water content 1980-2018</h4>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## The data cleaning for this was done separately, saved, and added here to save time</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>vwc_chunk <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../Data/vwc_data_historic.csv"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Ploting with one overlay to give a general and specific view</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> vwc_chunk, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> value)) <span class="sc">+</span> </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">alpha =</span> .<span class="dv">5</span>) <span class="sc">+</span> </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span> </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  my_theme <span class="sc">+</span> </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Volumetric Water Content by Season"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"MedianCubic Meters of Water per Cubic Meter of Soil"</span>) <span class="sc">+</span> </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">caption =</span> <span class="st">"Data from the US Geological Survey"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="data_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Caption: this chart shows the seasonal differences in volumetric water content as well as a smoothed graph which approximates the behavior without the seasonal noise.</p>
+<p>When spread out temporally, what jumps out at first is the extreme differences between seasons which manifests as visual noise in the line plot. This shows the yearly pattern of the previous graph while giving more information about the general trend. The smoothed line shows another parallel behavior, that of hills and valleys in the volumetric water content over multiple years which implies boom and bust weather cycles. This trend has ended on a low note in 2018 but seemed to have been trending towards a decline over the timescale as a whole. What this graph leaves us is trends over trends which we hope to explore as we go more into the analysis of the data.</p>
+<p>Before that though, there are a few other variables to explore.</p>
+</section>
+</section>
+<section id="misc.-variables" class="level2">
+<h2 class="anchored" data-anchor-id="misc.-variables">Misc. Variables</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Summer Evaporation</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Summer Dry Soil Days</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Soil Water Availability Summer</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">Winter Frost Days</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Establishing the data used here</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>other_vars <span class="ot">&lt;-</span> total_cleaned <span class="sc">%&gt;%</span> <span class="fu">filter</span>(RCP <span class="sc">==</span> <span class="st">"historical"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Evap_summer summarizing</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>other_graph1 <span class="ot">&lt;-</span> other_vars <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">c</span>(year, Evap_Summer))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>other_graph1 <span class="ot">&lt;-</span> other_graph1 <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(year) <span class="sc">%&gt;%</span> <span class="fu">summarise_at</span>(<span class="fu">vars</span>(<span class="st">"Evap_Summer"</span>), mean) </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Plotting</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(other_graph1, <span class="fu">aes</span>(<span class="at">y =</span> Evap_Summer,<span class="at">x =</span> year)) <span class="sc">+</span> </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  my_theme <span class="sc">+</span> </span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">caption =</span> <span class="st">"Data from the US Geological Survey"</span>) <span class="sc">+</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Evaporation in the Summer by Year"</span>) <span class="sc">+</span> </span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Year"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Centimeters of Evaporation"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="data_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Dry Soil Days summarizing</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>other_graph2 <span class="ot">&lt;-</span> other_vars <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">c</span>(year,DrySoilDays_Summer_whole))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>other_graph2 <span class="ot">&lt;-</span> other_graph2 <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(year) <span class="sc">%&gt;%</span> <span class="fu">summarise_at</span>(<span class="fu">vars</span>(<span class="st">"DrySoilDays_Summer_whole"</span>), mean) </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Plotting</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(other_graph2, <span class="fu">aes</span>(<span class="at">y =</span> DrySoilDays_Summer_whole,<span class="at">x =</span> year)) <span class="sc">+</span> </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> </span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  my_theme <span class="sc">+</span> </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">caption =</span> <span class="st">"Data from the US Geological Survey"</span>) <span class="sc">+</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Days with Dry soil in the Summer by Year"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Year"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Days"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="data_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Non Dry SWA summarizing</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>other_graph4 <span class="ot">&lt;-</span> other_vars <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">c</span>(year,NonDrySWA_Summer_whole))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>other_graph4 <span class="ot">&lt;-</span> other_graph4 <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(year) <span class="sc">%&gt;%</span> <span class="fu">summarise_at</span>(<span class="fu">vars</span>(<span class="st">"NonDrySWA_Summer_whole"</span>), mean) </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Plotting</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(other_graph4, <span class="fu">aes</span>(<span class="at">y =</span> NonDrySWA_Summer_whole,<span class="at">x =</span> year)) <span class="sc">+</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  my_theme <span class="sc">+</span> </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">caption =</span> <span class="st">"Data from the US Geological Survey"</span>)<span class="sc">+</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Soil Water Availability in Summer by Year"</span>) <span class="sc">+</span> </span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Mean Soil Water Availability"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Year"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="data_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Frost days Summarizing</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>other_graph3 <span class="ot">&lt;-</span> other_vars <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">c</span>(year,FrostDays_Winter))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>other_graph3 <span class="ot">&lt;-</span> other_graph3 <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(year) <span class="sc">%&gt;%</span> <span class="fu">summarise_at</span>(<span class="fu">vars</span>(<span class="st">"FrostDays_Winter"</span>), mean) </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Plotting</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(other_graph3, <span class="fu">aes</span>(<span class="at">y =</span> FrostDays_Winter,<span class="at">x =</span> year)) <span class="sc">+</span> </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(,<span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  my_theme <span class="sc">+</span> </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">caption =</span> <span class="st">"Data from the US Geological Survey"</span>) <span class="sc">+</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Frost days in Winter by Year"</span>) <span class="sc">+</span> </span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Year"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Days"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="data_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Caption: A collection of variables with a smoothed line showing the change over time.</p>
+<p>Collected here are other variables worth consideration when thinking about water retainment in the soil. The first of which is the evaporation rate in the summer which we can assume to be one of the driving forces of the lower VMC. Following that is the number of days in summer with dry soil or very low water amount. This gives a compliment to the previous variable, showing the days after which evaporation and other forces have removed all the water. Next is the soil water availability in the summer which indicated a mesh of the two previous values. Lastly is a tangential representation of the number of frost days or days where the temperature was below 1 degree Celsius. It could be assumed on these days that the water in the ground would be frozen and thus retained.</p>
+<p>Despite the overall upward or downward trends in the graphs, there seems to be a bump around 1998 where there seemed be more rain but also more heat which lead to more water availability in general but also more days with dry soil. These warm years are reflected in the frost day graph which showed a decrease in amount during that time. Outside of that, the trends show less water availability and thus evaporation along with fewer frost days. These trends thus indicate warming effects in the region and the effect of this on water retention in the area.</p>
+</section>
+<section id="conclusions" class="level2">
+<h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
+<p>To recap, we looked at relationships between foliage and location, analyzed temperature differences, noticed precipitation patterns, and saw the interlocking effects of the latter two forces. Overall there seem to be shifts towards more extreme weather patterns with drastic linear effects on other variable relationships which cannot be ignored. Out of all of them. the question of how the sparse water that ends up with the plants gets their and is maintained in the soil will become the lense by which we view this data.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

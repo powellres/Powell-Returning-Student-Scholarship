@@ -1,0 +1,916 @@
+---
+title: "RSS Workhouse"
+format: pdf
+editor: visual
+---
+
+## Reading in data
+
+```{r}
+library(tidyverse)
+
+historic <- read.csv("Data/NABR_historic.csv")
+nearterm <- read.csv("Data/nearterm_data_2020-2024.csv")
+
+historic$scenario %>% table()
+
+
+
+```
+
+```{r}
+library(ggplot2)
+library(ggtext)
+
+my_palette <- c("#6994D9","#91C4EB","#CDE4F6","#C5A5EC","#FCD9E5","#F8ACC6","#ED7CA9")
+two_tone <- c("#ED7CA9","#6994D9")
+
+my_theme <- theme_minimal() +
+  theme(
+    
+    ## Letting everything be markdown
+    axis.title.x = element_markdown(family = "sans"),
+    axis.title.y = element_markdown(family = "sans"),
+    
+    ## Grid
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(color = "gray77"),
+    
+    ## Legend
+    legend.title = element_markdown(family = "sans", face = "bold"),
+    legend.key = element_rect(fill = "white", color = "grey30"),
+    legend.text = element_markdown(family = "sans"),
+    
+    ## Text
+    plot.title = element_markdown(family = "sans", size = 16,face = "bold", hjust = .5),
+    plot.subtitle = element_markdown(family = "sans", size = 12, hjust = .5),
+    axis.title = element_markdown(family = "sans", face = "plain"),
+    axis.text = element_markdown(family = "sans", face = "plain"),
+    plot.caption = element_markdown(family = "sans", size = 9, face = "italic")
+    
+    ## General
+ 
+  )
+```
+
+
+## Cleaning Process Cause its ass
+
+#### Historic
+1. Establish Location groups
+2. For loops to get individual unit of analysis
+  a. Location Group
+  b. Year
+3. Based off of watching, there are two types of groups
+  a. Chunks of 2 which can be merged piece by piece together
+  b. Chunks of 4+1 or more which can be averaged and merged
+4. recompile new spreadsheet with those values
+
+
+```{r}
+
+## Cleaning step 1
+historic_clean_1 <- historic
+
+## Indexing the different locations by Long and Lat
+locations_groups_index_h <- historic_clean_1[,1:2] %>% unique()
+
+## Function to turn each location into a group
+location_group <- function(long,lat, index = locations_groups_index_h){
+  for(i in 1:nrow(index)){
+    if(long == index[i,1] & lat == index[i,2]){
+      return(i)
+    } else{
+      i = i
+    }
+  }
+}
+
+## New cleaning df, vectorization, and applying the data
+historic_clean_2 <- historic_clean_1
+location_group <- Vectorize(location_group)
+check <- location_group(historic_clean_2$long,historic_clean_2$lat)
+historic_clean_2$location_group <- check
+
+```
+
+```{r}
+
+## For each location group
+for(i in 1:113){
+  ## For each year in that location
+  for(g in 1980:2018){ # till 2018
+    ## Filtering for unit of analysis
+    filtered_data <- historic_clean_2 %>% filter(year == g & location_group == i)
+    ## Checking if group has negative or positive split across rows
+    na_check <- is.na(filtered_data[1,13])
+    if(na_check == TRUE){
+      num_row <- nrow(filtered_data)
+      piece_1 <- filtered_data[num_row,1:17]
+      piece_2 <- filtered_data[1:(num_row-1),18:24] %>% colMeans() %>% t() %>%as.data.frame()
+      piece_3 <- filtered_data[num_row,25:30]
+    } else{
+      num_row <- nrow(filtered_data)
+      piece_1 <- filtered_data[1,1:17]
+      piece_2 <- filtered_data[2:num_row,18:24] %>% colMeans() %>% t() %>%as.data.frame()
+      piece_3 <- filtered_data[1,25:30]
+    }
+
+    if(i == 1 & g == 1980){
+      historic_clean_3 <- cbind(piece_1,piece_2,piece_3)
+    } else{
+      slice <- cbind(piece_1,piece_2,piece_3)
+      historic_clean_3 <- rbind(historic_clean_3,slice)
+    }
+  }
+}
+  
+
+
+```
+
+
+#### NearTerm
+1. Establish Location groups
+2. For loops to get individual unit of analysis
+  a. Location Group
+  b. Year
+  c. 
+3. Based off of watching, there are two types of groups
+  a. Chunks of 2 which can be merged piece by piece together
+  b. Chunks of 4+1 or more which can be averaged and merges
+
+```{r}
+
+nearterm_clean_1 <- nearterm
+
+## Indexing the different locations by Long and Lat
+locations_groups_index_h <- nearterm_clean_1[,1:2] %>% unique()
+
+## Function to turn each location into a group
+location_group <- function(long,lat, index = locations_groups_index_h){
+  for(i in 1:nrow(index)){
+    if(long == index[i,1] & lat == index[i,2]){
+      return(i)
+    } else{
+      i = i
+    }
+  }
+}
+
+## New cleaning df, vectorization, and applying the data
+nearterm_clean_2 <- nearterm_clean_1
+location_group <- Vectorize(location_group)
+check <- location_group(nearterm_clean_2$long,nearterm_clean_2$lat)
+nearterm_clean_2$location_group <- check
+
+nearterm_clean_2$year %>% table()
+
+```
+
+
+```{r}
+
+scenario_index <- nearterm_clean_2$scenario %>% unique()
+
+## For each location group
+for(i in 1:113){
+  ## For each year in that location
+  for(g in 2021:2024){ # till 2018
+    for(f in 1:length(scenario_index)){
+      filtered_data <- nearterm_clean_2 %>% filter(year == g & location_group == i & scenario == scenario_index[f])
+      na_check <- is.na(filtered_data[1,13])
+      if(na_check == TRUE){
+        num_row <- nrow(filtered_data)
+        piece_1 <- filtered_data[num_row,1:17]
+        piece_2 <- filtered_data[1:(num_row-1),18:24] %>% colMeans() %>% t() %>%as.data.frame()
+        piece_3 <- filtered_data[num_row,25:30]
+      } else{
+        num_row <- nrow(filtered_data)
+        piece_1 <- filtered_data[1,1:17]
+        piece_2 <- filtered_data[2:num_row,18:24] %>% colMeans() %>% t() %>%as.data.frame()
+        piece_3 <- filtered_data[1,25:30]
+      }
+  
+      if(i == 1 & g == 2021 & f == 1){
+        nearterm_clean_3 <- cbind(piece_1,piece_2,piece_3)
+      } else{
+        slice <- cbind(piece_1,piece_2,piece_3)
+        nearterm_clean_3 <- rbind(nearterm_clean_3,slice)
+      }
+    }
+  }
+}
+  
+
+
+```
+
+#### Merging them together
+
+Year I'm going to merge and save it so I don't have to run this all again
+
+```{r}
+total_cleaned <- rbind(historic_clean_3,nearterm_clean_3)
+total_cleaned <- total_cleaned %>% select(-c(PPT_Annual,T_Annual))
+rownames(total_cleaned) <- NULL
+colnames(total_cleaned)[7] <- "Canopy"
+
+write.csv(total_cleaned,"Data/total_merged.csv")
+```
+
+## EDA
+
+```{r}
+for(i in 13:27){
+  data_block <- total_cleaned %>% filter(RCP == "historical")
+  data_slice <- data_block[,c(3,i)] %>% na.omit()
+  colnames(data_slice) <- c("year","value")
+  data_grouped <- data_slice %>% group_by(year) %>% summarise_at(vars(value), list(mean_value = mean))
+  plot <- ggplot(data = data_grouped, aes(x = year, y = mean_value)) + geom_line() + geom_smooth() +
+    labs(title = paste(colnames(total_cleaned)[i]," Per Year", sep = ""))
+  print(plot)
+}
+```
+
+
+## Data Graphs
+
+
+### Average Temperature in winter and summer with maximums / minimums
+
+```{r}
+
+temp_chunk <- total_cleaned %>% filter(RCP == "historical")
+temp_chunk <- temp_chunk[,c(3,20:23)] %>% na.omit()
+temp_chunk <- temp_chunk %>% group_by(year) %>% summarise_at(vars("T_Winter", "T_Summer", "Tmax_Summer", "Tmin_Winter"), mean) 
+
+temp_chunk_unorm <- temp_chunk %>% pivot_longer(cols = c("T_Winter", "T_Summer", "Tmax_Summer", "Tmin_Winter"))
+
+## Trying out difference metrics
+# temp_chunk <- temp_chunk %>% mutate(diff_Winter = T_Winter - lag(T_Winter, default = first(T_Winter)))
+# temp_chunk <- temp_chunk %>% mutate(diff_Summer = T_Summer - lag(T_Summer, default = first(T_Summer)))
+# temp_chunk <- temp_chunk %>% mutate(diffmin_Winter = Tmin_Winter - lag(Tmin_Winter, default = first(Tmin_Winter)))
+# temp_chunk <- temp_chunk %>% mutate(diffmax_Summer = Tmax_Summer - lag(Tmax_Summer, default = first(Tmax_Summer)))
+# temp_chunk <- temp_chunk[c(1,6:9)]
+# temp_chunk <- temp_chunk %>% pivot_longer(cols = c("diff_Winter", "diff_Summer", "diffmax_Summer", "diffmin_Winter"))
+
+## Trying out normalization
+temp_chunk$T_Winter <- (temp_chunk$T_Winter - mean(temp_chunk$T_Winter)) / sd(temp_chunk$T_Winter)
+temp_chunk$T_Summer <- (temp_chunk$T_Summer - mean(temp_chunk$T_Summer)) / sd(temp_chunk$T_Summer)
+temp_chunk$Tmin_Winter <- (temp_chunk$Tmin_Winter - mean(temp_chunk$Tmin_Winter)) / sd(temp_chunk$Tmin_Winter)
+temp_chunk$Tmax_Summer <- (temp_chunk$Tmax_Summer - mean(temp_chunk$Tmax_Summer)) / sd(temp_chunk$Tmax_Summer)
+temp_chunk <- temp_chunk %>% pivot_longer(cols = c("T_Winter", "T_Summer", "Tmax_Summer", "Tmin_Winter"))
+
+nice_label <- c()
+for(i in 1:nrow(temp_chunk)){
+  if(temp_chunk[i,2] == "T_Winter"){
+    nice_label <- c(nice_label,"Avg Winter Temp.")
+  } else if(temp_chunk[i,2] == "T_Summer"){
+    nice_label <- c(nice_label,"Avg Summer Temp.")
+  } else if(temp_chunk[i,2] == "Tmax_Summer"){
+    nice_label <- c(nice_label,"Max Summer Temp.")
+  } else{
+    nice_label <- c(nice_label,"Min Winter Temp.")
+  }
+}
+temp_chunk$nice_label <- nice_label
+
+temp_chunk$unnorm_value <- temp_chunk_unorm$value
+temp_chunk <- temp_chunk %>% mutate(mytext = paste("Category: ", nice_label, "\nYear: ", as.character(year), "\nNormalized Temp.: ", as.character(value), "\nUnnormalized Temp.:", as.character(unnorm_value)))
+
+write.csv(temp_chunk,"Data/Temperature_chunk.csv")
+
+plot_norm <- ggplot(data = temp_chunk, aes(x = year, y = value, color = nice_label)) + geom_smooth(se = FALSE) +
+  scale_color_manual(values = c("#FA7988", "#4CB2F9","#EB001C", "#0145ED")) + 
+  my_theme + labs(title = "Normalized Temperature by Year") +
+  theme(legend.position = "none") +
+  #guides(color=guide_legend(title="Temperature Value")) +
+  xlab("Year") + ylab("Normalized Temperature Celcius")
+
+plot_unnorm <- ggplot(data = temp_chunk, aes(x = year, y = unnorm_value, color = name)) + geom_smooth(se = FALSE) +
+  scale_color_manual(values = c("#FA7988", "#4CB2F9","#EB001C", "#0145ED")) + 
+  theme_minimal() 
+
+w <- ggplotly(plot_norm)
+w_unnorm <- ggplotly(plot_unnorm)
+
+
+text_1 <- paste("Category:", w$x$data[[1]]$name, "\nYear:", w$x$data[[1]]$x, "\nNormalized Temp.:", w$x$data[[1]]$y, "\nUnnormalized Temp. C.:", w_unnorm$x$data[[1]]$y)
+text_2 <- paste("Category:", w$x$data[[2]]$name, "\nYear:", w$x$data[[2]]$x, "\nNormalized Temp.:", w$x$data[[2]]$y, "\nUnnormalized Temp. C.:", w_unnorm$x$data[[2]]$y)
+text_3 <- paste("Category:", w$x$data[[3]]$name, "\nYear:", w$x$data[[3]]$x, "\nNormalized Temp.:", w$x$data[[3]]$y, "\nUnnormalized Temp. C.:", w_unnorm$x$data[[3]]$y)
+text_4 <- paste("Category:", w$x$data[[4]]$name, "\nYear:", w$x$data[[4]]$x, "\nNormalized Temp.:", w$x$data[[4]]$y, "\nUnnormalized Temp. C.:", w_unnorm$x$data[[4]]$y)
+
+w %>%
+  style(text = text_1, traces = 1) %>%
+  style(text = text_2, traces = 2) %>%
+  style(text = text_3, traces = 3) %>%
+  style(text = text_4, traces = 4)
+
+```
+
+### VWC 
+
+#### VWC boxplot
+
+```{r}
+#total_cleaned
+
+vwc_chunk <- total_cleaned %>% filter(RCP == "historical")
+vwc_chunk <- vwc_chunk[,c(24:27)] %>% na.omit()
+colnames(vwc_chunk) <- c("VWC Winter", "VWC Spring", "VWC Summer", "VWC Fall")
+vwc_chunk <- vwc_chunk %>% pivot_longer(cols = c("VWC Winter", "VWC Spring", "VWC Summer", "VWC Fall"))
+vwc_chunk$name <- vwc_chunk$name %>% factor(labels = c("VWC Winter", "VWC Spring", "VWC Summer", "VWC Fall"))
+
+
+plot <- ggplot(data = vwc_chunk, aes(x = name, y = value, fill = name)) + geom_boxplot() + guides(fill=guide_legend(title="Season of Value")) +
+  my_theme + labs(title = "Volumetric Water Content by Season") +
+  xlab("Season of Records") + ylab("MedianCubic Meters of Water per Cubic Meter of Soil") +
+  theme(legend.position = "none") +
+  scale_fill_manual(values = c("#42687C", "#F3A8BC", "#FFD700","#9C2706")) +
+  labs(caption = "Data from the US Geological Survey")
+
+plot
+
+```
+
+#### VWC merged
+
+```{r}
+#| fig-asp: .3
+
+vwc_chunk <- total_cleaned %>% filter(RCP == "historical")
+vwc_chunk <- vwc_chunk[,c(3,24:27)] %>% na.omit()
+colnames(vwc_chunk) <- c("Year","VWC_Winter", "VWC_Spring", "VWC_Summer", "VWC_Fall")
+vwc_chunk <- vwc_chunk %>% pivot_longer(cols = c("VWC_Winter", "VWC_Spring", "VWC_Summer", "VWC_Fall"))
+vwc_chunk$name <- vwc_chunk$name %>% factor(labels = c("VWC_Winter", "VWC_Spring", "VWC_Summer", "VWC_Fall"))
+vwc_chunk$Year <- vwc_chunk$Year %>% as.numeric()
+
+for(i in 1:nrow(vwc_chunk)){
+  if(vwc_chunk[i,2] == "VWC_Spring"){
+    vwc_chunk[i,1] <- vwc_chunk[i,1] + .25
+  } else if(vwc_chunk[i,2] == "VWC_Summer"){
+    vwc_chunk[i,1] <- vwc_chunk[i,1] + .5
+  } else if(vwc_chunk[i,2] == "VWC_Fall"){
+    vwc_chunk[i,1] <- vwc_chunk[i,1] + .75
+  }
+}
+
+write.csv(vwc_chunk, "Data/vwc_data_historic.csv")
+
+plot <- ggplot(data = vwc_chunk, aes(x = Year, y = value)) + geom_line(alpha = .5) + geom_smooth(se = FALSE, color = "black") + my_theme + labs(title = "Volumetric Water Content by Season") + ylab("MedianCubic Meters of Water per Cubic Meter of Soil") + labs(caption = "Data from the US Geological Survey")
+
+plot
+
+```
+
+
+### Interactive map and bar chart
+
+#### Foliage Stacked Bar Chart
+
+```{r}
+
+library(RColorBrewer)
+library(plotly)
+
+for(i in 1:113){
+  data <- total_cleaned %>% filter(location_group == i)
+  row <- data[1,c(1,2,7:12,28)]
+  if(i == 1){
+    stacked_data <- row
+  } else{
+    stacked_data <- rbind(stacked_data,row)
+  }
+}
+
+foliage <- pivot_longer(stacked_data, cols = c("Canopy","Ann_Herb","Bare","Herb","Litter","Shrub"))
+foliage$location_group <- foliage$location_group %>% as.character()
+foliage$name <- foliage$name %>% factor(levels = c("Canopy", "Ann_Herb","Shrub","Herb","Litter","Bare"))
+
+write.csv(foliage, "Data/foliage.csv")
+
+plot <- ggplot(data = foliage, aes(x = fct_reorder(location_group, value), y = value, fill = name)) + geom_bar(stat = "identity", width =1) + theme_minimal() +
+  scale_fill_manual(values = c("#3CB042","#E3242B","#98BF64","#99EDC3", "#466D1D", "#836539")) +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+plot
+ggplotly(plot)
+
+## Yeah this is going to be moved to tableau
+
+# Alphabetical order colors
+## c("#E3242B", "#836539","#3CB042","#99EDC3","#98BF64", "#466D1D")
+
+```
+
+
+#### Map of location
+
+```{r}
+
+## I'm just going to do this in Tableau Lmao
+
+```
+
+
+### Correlation plot
+
+```{r}
+library(corrplot)
+
+## Plot of the shrubbery
+corr <- cor(total_cleaned[,7:12])
+corrplot.mixed(corr, order = 'AOE', upper = "ellipse", upper.col = COL2('BrBG'), lower.col = COL2('BrBG'), tl.col = 'black')
+
+```
+
+
+
+### Tabbed other variables over time
+
+```{r}
+
+other_vars <- total_cleaned %>% filter(RCP == "historical")
+
+## Evap_summer
+other_graph1 <- other_vars %>% select(c(year, Evap_Summer))
+other_graph1 <- other_graph1 %>% group_by(year) %>% summarise_at(vars("Evap_Summer"), mean) 
+ggplot(other_graph1, aes(y = Evap_Summer,x = year)) + geom_smooth(se = FALSE) +
+  my_theme + labs(caption = "Data from the US Geological Survey") +
+  labs(title = "Evaporation in the Summer by Year") + xlab("Year") + ylab("Centimeters of Evaporation")
+
+## Dry Soil Days
+other_graph2 <- other_vars %>% select(c(year,DrySoilDays_Summer_whole))
+other_graph2 <- other_graph2 %>% group_by(year) %>% summarise_at(vars("DrySoilDays_Summer_whole"), mean) 
+ggplot(other_graph2, aes(y = DrySoilDays_Summer_whole,x = year)) + geom_smooth(se = FALSE) + my_theme + labs(caption = "Data from the US Geological Survey") +
+  labs(title = "Days with Dry soil in the Summer by Year") + xlab("Year") + ylab("Days")
+
+## Frost days
+other_graph3 <- other_vars %>% select(c(year,FrostDays_Winter))
+other_graph3 <- other_graph3 %>% group_by(year) %>% summarise_at(vars("FrostDays_Winter"), mean) 
+ggplot(other_graph3, aes(y = FrostDays_Winter,x = year)) + geom_smooth(,se = FALSE) + my_theme + labs(caption = "Data from the US Geological Survey") +
+  labs(title = "Frost days in Winter by Year") + xlab("Year") + ylab("Days")
+
+## Non Dry SWA
+other_graph4 <- other_vars %>% select(c(year,NonDrySWA_Summer_whole))
+other_graph4 <- other_graph4 %>% group_by(year) %>% summarise_at(vars("NonDrySWA_Summer_whole"), mean) 
+ggplot(other_graph4, aes(y = NonDrySWA_Summer_whole,x = year)) + geom_smooth(se = FALSE) + my_theme + labs(caption = "Data from the US Geological Survey")+
+  labs(title = "Soil Water Availaibility in Summer") + ylab("Mean Soil Water Availability") + xlab("Year")
+
+```
+
+### Winter and summer percipitaion
+
+```{r}
+total_cleaned
+
+ppt_chunk <- total_cleaned %>% filter(RCP == "historical")
+ppt_chunk <- ppt_chunk[,c(3,18:19)] %>% na.omit()
+colnames(ppt_chunk) <- c("year", "Winter", "Summer")
+ppt_chunk <- ppt_chunk %>% group_by(year) %>% summarise_at(vars("Winter","Summer"), mean) 
+
+ppt_chunk <- ppt_chunk %>% pivot_longer(cols = c("Winter","Summer"))
+
+ggplot(data = ppt_chunk, aes(x = year, y = value, color = name)) + geom_line() + geom_point() + geom_smooth(se = F) + my_theme + xlab("Year") + ylab("Sum of Precipitaion in Centimeters") + labs(title = "Precipitation by Year and Season") + guides(color=guide_legend(title="Season")) + labs(caption = "Data from the US Geological Survey")
+```
+
+
+## Microclimate differences
+
+```{r}
+historic_cleaned <- total_cleaned %>% filter(RCP == "historical") %>% na.omit()
+```
+
+
+### Correlation plot compaing foliage to other values with significance
+
+```{r}
+
+library(corrplot)
+corr_check <- historic_cleaned[,7:27]
+rownames(corr_check) <- NULL
+colnames(corr_check)[c(7,9,10,11,18:21)] <- c("DrySoilDays","DryStress", "FrostDays", "NonDrySWA", "VWC_Winter","VWC_Spring","VWC_Summer", "VWC_Fall")
+
+corr = cor(corr_check)
+corr_test <- cor.mtest(corr_check, conf.level = .95)
+corrplot(corr, p.mat = corr_test$p, sig.level = .10, tl.col = 'black', col = COL2('BrBG'), type = "upper")
+
+```
+
+
+### Potential overlaps following corrplot
+
+#### Dry Stress and Summer Temperatures
+```{r}
+
+side_graph_1 <- historic_cleaned %>% filter(DrySoilDays_Summer_whole != 0)
+
+ggplot(data = side_graph_1, aes(x = DrySoilDays_Summer_whole, y = T_Summer, color = Tmax_Summer)) +
+  geom_point() + geom_smooth(method='lm', formula= y~x, se = FALSE, color = "red") +
+  xlab("Dry Soil Days Summer") + ylab("Temperature Summer") + labs(title = "Dry Soil Days by Avg. and Max Summer Temp.") + labs(caption = "Data from the US Geological Survey") + my_theme + guides(color=guide_legend(title="Max Temp. C°")) +
+  scale_color_continuous(low = "white",high = "red") + guides(color = guide_legend(reverse=TRUE))
+
+
+```
+
+
+#### Frost days and T_Winter
+```{r}
+
+ggplot(data = historic_cleaned, aes(x = FrostDays_Winter, y = T_Winter, color = T_Winter)) +
+  geom_point() + geom_smooth(method='lm', formula= y~x) +
+  xlab("Days") + ylab("Avg. Winter Temperature") + labs(title = "Winter Temperature by Number Frost Days") + labs(caption = "Data from the US Geological Survey") + my_theme + theme(legend.position = "none") + scale_color_continuous(high = "white",low = "blue")
+
+```
+
+
+#### Evap Summer and PPT Summer
+
+```{r}
+
+ggplot(data = historic_cleaned, aes(x = Evap_Summer, y = PPT_Summer, color = PPT_Summer)) +
+  geom_point() + geom_smooth(method='lm', formula= y~x, color = "blue")+
+  xlab("Evaporation Amount in Summer") + ylab("Precipitation in Summer") + labs(title = "Evaporation by Precipitaion") + labs(caption = "Data from the US Geological Survey") + my_theme + theme(legend.position = "none") + scale_color_continuous(low = "white",high = "grey") + guides(color = guide_legend(reverse=TRUE))
+
+```
+#### Running model then using silhouette method
+
+### K means  of locations
+
+```{r}
+
+set.seed(25)
+
+clustering_val <- historic_cleaned[,7:12]
+
+## Normalizing
+
+for(i in 1:6){
+  clustering_val[,i] <- (clustering_val[,i] - mean(clustering_val[,i]))/ sd(clustering_val[,i])
+}
+
+kmeans_test <- numeric(n_clusters)
+
+n_clusters <- 10
+
+for(i in 1:n_clusters){
+  kmeans_out <- kmeans(clustering_val, centers = i, nstart = 20)
+  kmeans_test[i] <- kmeans_out$tot.withinss
+}
+
+
+## Within cluster sum of squares
+cluster_df <- tibble(clusters = 1:n_clusters, Closeness = kmeans_test)
+
+ggplot(cluster_df, aes(x = clusters, y = Closeness)) + geom_line() + geom_point() +
+  geom_hline(
+        yintercept = kmeans_test, 
+        linetype = 'dashed', 
+        col = c(rep('#000000',4),'#FF0000', rep('#000000', 5))
+    ) + my_theme + labs(title = "Optimal Cluster Test") + xlab("Number of Clusters")
+
+```
+
+#### Statistics about each cluster in DT datatable
+
+```{r}
+set.seed(25)
+
+library(DT)
+kmeans_out <- kmeans(clustering_val, centers = 5, nstart = 20)
+table <- kmeans_out$centers %>% as.data.frame()
+
+for(i in 7:12){
+  table[,i-6] <-mean(historic_cleaned[,i]) + (table[,i-6] * sd(historic_cleaned[,i]))
+}
+
+datatable(table)
+```
+
+
+#### visualizing clusters as best as possible
+
+```{r}
+set.seed(25)
+
+kmeans_out <- kmeans(clustering_val, centers = 5, nstart = 20)
+historic_cleaned$cluster <- kmeans_out$cluster %>% as.factor()
+
+
+
+#write.csv(historic_cleaned, "Data/Cluster_cleaned.csv")
+
+pair_data <- historic_cleaned %>% select(c(Ann_Herb, Canopy, Bare, Herb, Litter, Shrub))
+
+l <- 6
+
+pairs(pair_data, pch = 22, bg = hcl.colors(l, "Temps")[kmeans_out$cluster], col = hcl.colors(l, "Temps")[kmeans_out$cluster])
+
+```
+
+
+### Visualizing locations by cluster (Tableau 2)
+
+```{r}
+for(i in 1:113){
+  data <- historic_cleaned %>% filter(location_group == i)
+  row <- data[1,c(1,2,7:12,28,29)]
+  if(i == 1){
+    stacked_data <- row
+  } else{
+    stacked_data <- rbind(stacked_data,row)
+  }
+}
+
+foliage <- pivot_longer(stacked_data, cols = c("Canopy","Ann_Herb","Bare","Herb","Litter","Shrub"))
+foliage$location_group <- foliage$location_group %>% as.character()
+foliage$cluster <- foliage$cluster %>% as.character()
+foliage$name <- foliage$name %>% factor(levels = c("Canopy", "Ann_Herb","Shrub","Herb","Litter","Bare"))
+
+write.csv(foliage, "Data/foliage_cluster.csv")
+```
+
+
+### doing earlier correlation plot again with clusters
+
+```{r}
+corr_check <- historic_cleaned[,c(13:27,29)] %>% mutate(instance = 1)
+rownames(corr_check) <- NULL
+colnames(corr_check)[c(1,3,4,5,12:15)] <- c("DrySoilDays","DryStress", "FrostDays", "NonDrySWA", "VWC_Winter","VWC_Spring","VWC_Summer", "VWC_Fall")
+corr_check <- pivot_wider(corr_check, names_from = "cluster", values_from = instance, values_fill = 0)
+
+corr = cor(corr_check)
+corr_test <- cor.mtest(corr_check, conf.level = .95)
+corrplot(corr, p.mat = corr_test$p, sig.level = .10, tl.col = 'black', col = COL2('BrBG'), type = "upper")
+```
+
+### VWC by cluster
+
+```{r}
+vwc_chunk <- historic_cleaned
+vwc_chunk <- vwc_chunk[,c(3,24:27,29)] %>% na.omit()
+colnames(vwc_chunk) <- c("Year","VWC_Winter", "VWC_Spring", "VWC_Summer", "VWC_Fall", "Cluster")
+vwc_chunk <- vwc_chunk %>% pivot_longer(cols = c("VWC_Winter", "VWC_Spring", "VWC_Summer", "VWC_Fall"))
+vwc_chunk$name <- vwc_chunk$name %>% factor(labels = c("VWC_Winter", "VWC_Spring", "VWC_Summer", "VWC_Fall"))
+vwc_chunk$Year <- vwc_chunk$Year %>% as.numeric()
+
+for(i in 1:nrow(vwc_chunk)){
+  if(vwc_chunk[i,3] == "VWC_Spring"){
+    vwc_chunk[i,1] <- vwc_chunk[i,1] + .25
+  } else if(vwc_chunk[i,3] == "VWC_Summer"){
+    vwc_chunk[i,1] <- vwc_chunk[i,1] + .5
+  } else if(vwc_chunk[i,3] == "VWC_Fall"){
+    vwc_chunk[i,1] <- vwc_chunk[i,1] + .75
+  }
+}
+
+write.csv(vwc_chunk,"Data/vwc_data_historic_cluster.csv")
+
+ggplot(data = vwc_chunk, aes(x = Year, y = value, color = Cluster)) + geom_smooth(se = FALSE) +
+  labs(title = "Volumetric Water Content by Season and Cluster") + ylab("Median Cubic Meters of Water per Cubic Meter of Soil") + labs(caption = "Data from the US Geological Survey") + my_theme + scale_color_manual(values = c("#BCD2EE","#9B7EDE","#832161", "#52050A","#76E7CD"))
+
+```
+
+### Dry Soil Days
+
+```{r}
+
+other_graph1 <- historic_cleaned %>% select(c(year, DrySoilDays_Summer_whole, cluster))
+other_graph1 <- other_graph1 %>% group_by(year, cluster) %>% summarise_at(vars("DrySoilDays_Summer_whole"), mean) 
+ggplot(other_graph1, aes(y = DrySoilDays_Summer_whole,x = year, color = cluster)) + geom_smooth(se = FALSE) + labs(title = "Dry Soil Days by Year and Cluster") + ylab("Days") + xlab("Year") + labs(caption = "Data from the US Geological Survey") + my_theme + scale_color_manual(values = c("#BCD2EE","#9B7EDE","#832161", "#52050A","#76E7CD"))
+
+#ggplot(data = historic_cleaned, aes(x = year, y = DrySoilDays_Summer_whole)) + geom_smooth()
+```
+
+
+### non dry SWA
+
+```{r}
+
+other_graph1 <- historic_cleaned %>% select(c(year, NonDrySWA_Summer_whole, cluster))
+other_graph1 <- other_graph1 %>% group_by(year, cluster) %>% summarise_at(vars("NonDrySWA_Summer_whole"), mean) 
+ggplot(other_graph1, aes(y = NonDrySWA_Summer_whole,x = year, color = cluster)) + geom_smooth(se = FALSE) + labs(title = "Soial Water Availability in Summer by Year and Cluster") + ylab("Total Centimetes of water")+ xlab("Year") + labs(caption = "Data from the US Geological Survey") + my_theme + scale_color_manual(values = c("#BCD2EE","#9B7EDE","#832161", "#52050A","#76E7CD"))
+
+#ggplot(data = historic_cleaned, aes(x = year, y = DrySoilDays_Summer_whole)) + geom_smooth()
+```
+
+Cluster 3 is highly effected by ann herb and thus is not as variable as the others
+
+## Future data
+
+### Scenario Split 
+
+```{r}
+
+nearterm_cleaned <- total_cleaned %>% filter(RCP != "historical")
+
+vwc_chunk <- nearterm_cleaned
+vwc_chunk <- vwc_chunk[,c(3,5,6,24:27)] %>% na.omit()
+colnames(vwc_chunk) <- c("Year","RCP","Scenario","VWC_Winter", "VWC_Spring", "VWC_Summer", "VWC_Fall")
+vwc_chunk <- vwc_chunk %>% pivot_longer(cols = c("VWC_Winter", "VWC_Spring", "VWC_Summer", "VWC_Fall"))
+vwc_chunk$name <- vwc_chunk$name %>% factor(labels = c("VWC_Winter", "VWC_Spring", "VWC_Summer", "VWC_Fall"))
+vwc_chunk$Year <- vwc_chunk$Year %>% as.numeric()
+
+for(i in 1:nrow(vwc_chunk)){
+  if(vwc_chunk[i,4] == "VWC_Spring"){
+    vwc_chunk[i,1] <- vwc_chunk[i,1] + .25
+  } else if(vwc_chunk[i,4] == "VWC_Summer"){
+    vwc_chunk[i,1] <- vwc_chunk[i,1] + .5
+  } else if(vwc_chunk[i,4] == "VWC_Fall"){
+    vwc_chunk[i,1] <- vwc_chunk[i,1] + .75
+  }
+}
+
+mycolors <- colorRampPalette(brewer.pal(11, "RdBu"))(40)
+mycolors <- rev(mycolors)
+
+write.csv(vwc_chunk,"Data/vwc_data_nearterm_scenario.csv")
+
+plot <- ggplot(data = vwc_chunk, aes(x = Year, y = value, color = Scenario)) + geom_smooth(se = FALSE) + labs(title = "Volumetric Water Content by Season and Scenario") + ylab("Median Cubic Meters of Water per Cubic Meter of Soil") + labs(caption = "Data from the US Geological Survey") + my_theme + scale_color_manual(values = mycolors)
+
+ggplotly(plot)
+```
+
+#### Scenarios by RCP
+
+```{r}
+
+RCP_Scenario <- nearterm_cleaned %>% select(c(RCP,scenario)) %>% unique()
+
+plot <- ggplot(RCP_Scenario, aes(x = RCP, fill = scenario)) + geom_bar() + labs(title = "Scenarios in Each RCP") + ylab("Amount of Scenarios") + labs(caption = "Data from the US Geological Survey") + my_theme + scale_fill_manual(values = mycolors)
+
+
+ggplotly(plot)
+```
+
+#### RCP for same graph
+
+```{r}
+vwc_chunk2 <- vwc_chunk
+vwc_chunk2 <- vwc_chunk2 %>% group_by(RCP,Year) %>% summarise_at(vars("value"), mean)
+vwc_chunk2$RCP <- vwc_chunk2$RCP %>% as.character()
+ggplot(data = vwc_chunk2, aes(x = Year, y = value, color = RCP)) + geom_line() + geom_smooth(se = FALSE) + labs(title = "Volumetric Water Content by Season and RCP") + ylab("Median Cubic Meters of Water per Cubic Meter of Soil") + labs(caption = "Data from the US Geological Survey") + my_theme + scale_color_manual(values = c("blue","red"))
+```
+
+
+```{r}
+
+vwc_chunk <- nearterm_cleaned
+vwc_chunk <- vwc_chunk[,c(5,24:27)] %>% na.omit()
+colnames(vwc_chunk) <- c("RCP","VWC Winter", "VWC Spring", "VWC Summer", "VWC Fall")
+vwc_chunk <- vwc_chunk %>% pivot_longer(cols = c("VWC Winter", "VWC Spring", "VWC Summer", "VWC Fall"))
+vwc_chunk$name <- vwc_chunk$name %>% factor(labels = c("VWC Winter", "VWC Spring", "VWC Summer", "VWC Fall")) 
+
+plot <- ggplot(data = vwc_chunk, aes(x = name, y = value, fill = RCP)) + geom_boxplot(position = position_dodge()) + guides(fill=guide_legend(title="Season of Value")) +
+  my_theme + labs(title = "Volumetric Water Content by Season") +
+  xlab("Season of Records") + ylab("MedianCubic Meters of Water per Cubic Meter of Soil")
+
+ggplotly(plot)
+```
+
+
+### RCP Run
+
+characteristics of each 
+
+#### EDA lmao
+
+```{r}
+for(i in 13:27){
+  data_slice <- nearterm_cleaned[,c(3,5,i)] %>% na.omit()
+  colnames(data_slice) <- c("year","RCP","value")
+  data_grouped <- data_slice %>% group_by(year, RCP) %>% summarise_at(vars(value), list(mean_value = mean))
+  plot <- ggplot(data = data_grouped, aes(x = year, y = mean_value, color= RCP)) + geom_smooth(se = FALSE) +
+    labs(title = paste(colnames(total_cleaned)[i]," Per Year", sep = ""))
+  print(plot)
+}
+```
+
+###
+
+
+### Dodged Something
+
+
+```{r}
+
+temp_chunk <- total_cleaned %>% filter(RCP != "historical")
+temp_chunk <- temp_chunk[,c(5,20:23)] %>% na.omit()
+colnames(temp_chunk) <- c("RCP","Temp Winter", "Temp Summer", "Max Temp Summer", "Min Temp Winter")
+temp_chunk <- temp_chunk %>% pivot_longer(cols = c("Temp Winter", "Temp Summer", "Max Temp Summer", "Min Temp Winter"))
+temp_chunk$name <- temp_chunk$name %>% factor(labels = c("Temp Summer","Temp Winter", "Max Temp Summer", "Min Temp Winter"))
+
+
+plot <- ggplot(data = temp_chunk, aes(x = name, y = value, fill = RCP)) + geom_bar(stat = "identity", position = "dodge") + guides(fill=guide_legend(title="Season of Value")) +
+  my_theme + labs(title = "Volumetric Water Content by Season") +
+  xlab("Season of Records") + ylab("MedianCubic Meters of Water per Cubic Meter of Soil") +
+  scale_fill_manual(values = c("#4CB2F9", "#FA7988")) + 
+  labs(caption = "Data from the US Geological Survey")
+
+ggplotly(plot)
+```
+
+### RCP back and forth comparison (jimjam-slam)
+
+```{r}
+#| message: FALSE
+#| warning: FALSE
+
+ppt_chunk <- total_cleaned %>% filter(RCP == "4.5")
+ppt_chunk <- ppt_chunk[,c(3,18:19)] %>% na.omit()
+colnames(ppt_chunk) <- c("year", "Winter", "Summer")
+ppt_chunk <- ppt_chunk %>% group_by(year) %>% summarise_at(vars("Winter","Summer"), mean) 
+
+ppt_chunk <- ppt_chunk %>% pivot_longer(cols = c("Winter","Summer"))
+
+ggplot(data = ppt_chunk, aes(x = year, y = value, color = name)) + geom_line(size = 2) + geom_point(size = 3) + my_theme + xlab("Year") + ylab("Sum of Precipitaion in Centimeters") + labs(title = "Precipitation by Year and Season RCP 4.5") + guides(color=guide_legend(title="Season")) + labs(caption = "Data from the US Geological Survey") + ylim(5,10)
+
+ggsave("Images/Precipitation_4.5.png")
+
+ppt_chunk <- total_cleaned %>% filter(RCP == "8.5")
+ppt_chunk <- ppt_chunk[,c(3,18:19)] %>% na.omit()
+colnames(ppt_chunk) <- c("year", "Winter", "Summer")
+ppt_chunk <- ppt_chunk %>% group_by(year) %>% summarise_at(vars("Winter","Summer"), mean) 
+
+ppt_chunk <- ppt_chunk %>% pivot_longer(cols = c("Winter","Summer"))
+
+ggplot(data = ppt_chunk, aes(x = year, y = value, color = name)) + geom_line(size = 2) + geom_point(size = 3) + my_theme + xlab("Year") + ylab("Sum of Precipitaion in Centimeters") + labs(title = "Precipitation by Year and Season RCP 8.5") + guides(color=guide_legend(title="Season")) + labs(caption = "Data from the US Geological Survey") + ylim(5,10)
+
+ggsave("Images/Precipitation_8.5.png")
+
+```
+
+
+
+
+
+
+::: panel-tabset
+## Summer Evaporation
+
+```{r}
+#| message: FALSE
+#| warning: FALSE
+other_vars <- total_cleaned %>% filter(RCP != "historical")
+
+## Evap_summer
+other_graph1 <- other_vars %>% select(c(RCP,year, Evap_Summer))
+other_graph1 <- other_graph1 %>% group_by(RCP,year) %>% summarise_at(vars("Evap_Summer"), mean) 
+ggplot(other_graph1, aes(y = Evap_Summer,x = year, color = RCP)) + geom_smooth(se = FALSE) +
+  my_theme + labs(caption = "Data from the US Geological Survey") +
+  labs(title = "Evaporation in the Summer by Year") + xlab("Year") + ylab("Centimeters of Evaporation") + scale_color_manual(values = c("blue","red"))
+```
+
+## Summer Dry Soil Days
+
+```{r}
+#| message: FALSE
+#| warning: FALSE
+## Dry Soil Days
+other_graph2 <- other_vars %>% select(c(RCP, year,DrySoilDays_Summer_whole))
+other_graph2 <- other_graph2 %>% group_by(RCP, year) %>% summarise_at(vars("DrySoilDays_Summer_whole"), mean) 
+ggplot(other_graph2, aes(y = DrySoilDays_Summer_whole,x = year, color = RCP)) + geom_smooth(se = FALSE) + my_theme + labs(caption = "Data from the US Geological Survey") +
+  labs(title = "Days with Dry soil in the Summer by Year and RCP") + xlab("Year") + ylab("Days") + scale_color_manual(values = c("blue","red"))
+```
+
+## Soil Water Availability Summer
+
+```{r}
+#| message: FALSE
+#| warning: FALSE
+## Non Dry SWA
+other_graph4 <- other_vars %>% select(c(RCP, year, NonDrySWA_Summer_whole)) %>% na.omit()
+other_graph4 <- other_graph4 %>% group_by(RCP, year) %>% summarise_at(vars("NonDrySWA_Summer_whole"), mean) 
+ggplot(other_graph4, aes(y = NonDrySWA_Summer_whole,x = year, color = RCP)) + geom_smooth(se = FALSE) + my_theme + labs(caption = "Data from the US Geological Survey")+
+  labs(title = "Soil Water Availability in Summer By Year and RCP") + ylab("Mean Soil Water Availability") + xlab("Year") + scale_color_manual(values = c("blue","red"))
+
+```
+
+## Winter Frost days
+
+```{r}
+#| message: FALSE
+#| warning: FALSE
+## Frost days
+other_graph3 <- other_vars %>% select(c(RCP, year,FrostDays_Winter))
+other_graph3 <- other_graph3 %>% group_by(RCP,year) %>% summarise_at(vars("FrostDays_Winter"), mean) 
+ggplot(other_graph3, aes(y = FrostDays_Winter,x = year, color = RCP)) + geom_smooth(,se = FALSE) + my_theme + labs(caption = "Data from the US Geological Survey") +
+  labs(title = "Frost days in Winter by Year and RCP") + xlab("Year") + ylab("Days") + scale_color_manual(values = c("blue","red"))
+```
+
+:::
+
+## Website Touches
+Scrollytelling sticky images
+Sliding bar from one graph to another
+Multiple tabs for specific visualization
+Multiple tabs for the project
+Icons
+Table of contents built in
+Quick Navigation on the left
+Custom Visualization theme
+
+
+

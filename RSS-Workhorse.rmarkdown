@@ -1,0 +1,441 @@
+---
+title: "RSS Workhouse"
+format: pdf
+editor: visual
+---
+
+
+## Reading in data
+
+
+```{r}
+library(tidyverse)
+
+historic <- read.csv("Data/NABR_historic.csv")
+nearterm <- read.csv("Data/nearterm_data_2020-2024.csv")
+
+historic$scenario %>% table()
+
+
+
+```
+
+
+## Cleaning Process Cause its ass
+
+#### Historic
+1. Establish Location groups
+2. For loops to get individual unit of analysis
+  a. Location Group
+  b. Year
+3. Based off of watching, there are two types of groups
+  a. Chunks of 2 which can be merged piece by piece together
+  b. Chunks of 4+1 or more which can be averaged and merged
+4. recompile new spreadsheet with those values
+
+
+
+```{r}
+
+## Cleaning step 1
+historic_clean_1 <- historic
+
+## Indexing the different locations by Long and Lat
+locations_groups_index_h <- historic_clean_1[,1:2] %>% unique()
+
+## Function to turn each location into a group
+location_group <- function(long,lat, index = locations_groups_index_h){
+  for(i in 1:nrow(index)){
+    if(long == index[i,1] & lat == index[i,2]){
+      return(i)
+    } else{
+      i = i
+    }
+  }
+}
+
+## New cleaning df, vectorization, and applying the data
+historic_clean_2 <- historic_clean_1
+location_group <- Vectorize(location_group)
+check <- location_group(historic_clean_2$long,historic_clean_2$lat)
+historic_clean_2$location_group <- check
+
+```
+
+```{r}
+
+## For each location group
+for(i in 1:113){
+  ## For each year in that location
+  for(g in 1980:2018){ # till 2018
+    ## Filtering for unit of analysis
+    filtered_data <- historic_clean_2 %>% filter(year == g & location_group == i)
+    ## Checking if group has negative or positive split across rows
+    na_check <- is.na(filtered_data[1,13])
+    if(na_check == TRUE){
+      num_row <- nrow(filtered_data)
+      piece_1 <- filtered_data[num_row,1:17]
+      piece_2 <- filtered_data[1:(num_row-1),18:24] %>% colMeans() %>% t() %>%as.data.frame()
+      piece_3 <- filtered_data[num_row,25:30]
+    } else{
+      num_row <- nrow(filtered_data)
+      piece_1 <- filtered_data[1,1:17]
+      piece_2 <- filtered_data[2:num_row,18:24] %>% colMeans() %>% t() %>%as.data.frame()
+      piece_3 <- filtered_data[1,25:30]
+    }
+
+    if(i == 1 & g == 1980){
+      historic_clean_3 <- cbind(piece_1,piece_2,piece_3)
+    } else{
+      slice <- cbind(piece_1,piece_2,piece_3)
+      historic_clean_3 <- rbind(historic_clean_3,slice)
+    }
+  }
+}
+  
+
+
+```
+
+
+
+#### NearTerm
+1. Establish Location groups
+2. For loops to get individual unit of analysis
+  a. Location Group
+  b. Year
+  c. 
+3. Based off of watching, there are two types of groups
+  a. Chunks of 2 which can be merged piece by piece together
+  b. Chunks of 4+1 or more which can be averaged and merges
+
+
+```{r}
+
+nearterm_clean_1 <- nearterm
+
+## Indexing the different locations by Long and Lat
+locations_groups_index_h <- nearterm_clean_1[,1:2] %>% unique()
+
+## Function to turn each location into a group
+location_group <- function(long,lat, index = locations_groups_index_h){
+  for(i in 1:nrow(index)){
+    if(long == index[i,1] & lat == index[i,2]){
+      return(i)
+    } else{
+      i = i
+    }
+  }
+}
+
+## New cleaning df, vectorization, and applying the data
+nearterm_clean_2 <- nearterm_clean_1
+location_group <- Vectorize(location_group)
+check <- location_group(nearterm_clean_2$long,nearterm_clean_2$lat)
+nearterm_clean_2$location_group <- check
+
+nearterm_clean_2$year %>% table()
+
+```
+
+```{r}
+
+scenario_index <- nearterm_clean_2$scenario %>% unique()
+
+## For each location group
+for(i in 1:113){
+  ## For each year in that location
+  for(g in 2021:2024){ # till 2018
+    for(f in 1:length(scenario_index)){
+      filtered_data <- nearterm_clean_2 %>% filter(year == g & location_group == i & scenario == scenario_index[f])
+      na_check <- is.na(filtered_data[1,13])
+      if(na_check == TRUE){
+        num_row <- nrow(filtered_data)
+        piece_1 <- filtered_data[num_row,1:17]
+        piece_2 <- filtered_data[1:(num_row-1),18:24] %>% colMeans() %>% t() %>%as.data.frame()
+        piece_3 <- filtered_data[num_row,25:30]
+      } else{
+        num_row <- nrow(filtered_data)
+        piece_1 <- filtered_data[1,1:17]
+        piece_2 <- filtered_data[2:num_row,18:24] %>% colMeans() %>% t() %>%as.data.frame()
+        piece_3 <- filtered_data[1,25:30]
+      }
+  
+      if(i == 1 & g == 2021 & f == 1){
+        nearterm_clean_3 <- cbind(piece_1,piece_2,piece_3)
+      } else{
+        slice <- cbind(piece_1,piece_2,piece_3)
+        nearterm_clean_3 <- rbind(nearterm_clean_3,slice)
+      }
+    }
+  }
+}
+  
+
+
+```
+
+
+#### Merging them together
+
+Year I'm going to merge and save it so I don't have to run this all again
+
+
+```{r}
+total_cleaned <- rbind(historic_clean_3,nearterm_clean_3)
+total_cleaned <- total_cleaned %>% select(-c(PPT_Annual,T_Annual))
+rownames(total_cleaned) <- NULL
+colnames(total_cleaned)[7] <- "Canopy"
+
+write.csv(total_cleaned,"Data/total_merged.csv")
+```
+
+
+## EDA
+
+
+```{r}
+for(i in 13:27){
+  data_slice <- total_cleaned[,c(3,i)] %>% na.omit()
+  colnames(data_slice) <- c("year","value")
+  data_grouped <- data_slice %>% group_by(year) %>% summarise_at(vars(value), list(mean_value = mean))
+  plot <- ggplot(data = data_grouped, aes(x = year, y = mean_value)) + geom_smooth() +
+    labs(title = paste(colnames(total_cleaned)[i]," Per Year", sep = ""))
+  print(plot)
+}
+```
+
+
+
+## Data Graphs
+
+
+### Average Temperature in winter and summer with maximums / minimums
+
+
+```{r}
+
+temp_chunk <- total_cleaned[,c(3,20:23)] %>% na.omit()
+temp_chunk <- temp_chunk %>% group_by(year) %>% summarise_at(vars("T_Winter", "T_Summer", "Tmax_Summer", "Tmin_Winter"), mean) 
+
+temp_chunk_unorm <- temp_chunk %>% pivot_longer(cols = c("T_Winter", "T_Summer", "Tmax_Summer", "Tmin_Winter"))
+
+## Trying out difference metrics
+# temp_chunk <- temp_chunk %>% mutate(diff_Winter = T_Winter - lag(T_Winter, default = first(T_Winter)))
+# temp_chunk <- temp_chunk %>% mutate(diff_Summer = T_Summer - lag(T_Summer, default = first(T_Summer)))
+# temp_chunk <- temp_chunk %>% mutate(diffmin_Winter = Tmin_Winter - lag(Tmin_Winter, default = first(Tmin_Winter)))
+# temp_chunk <- temp_chunk %>% mutate(diffmax_Summer = Tmax_Summer - lag(Tmax_Summer, default = first(Tmax_Summer)))
+# temp_chunk <- temp_chunk[c(1,6:9)]
+# temp_chunk <- temp_chunk %>% pivot_longer(cols = c("diff_Winter", "diff_Summer", "diffmax_Summer", "diffmin_Winter"))
+
+## Trying out normalization
+temp_chunk$T_Winter <- (temp_chunk$T_Winter - mean(temp_chunk$T_Winter)) / sd(temp_chunk$T_Winter)
+temp_chunk$T_Summer <- (temp_chunk$T_Summer - mean(temp_chunk$T_Summer)) / sd(temp_chunk$T_Summer)
+temp_chunk$Tmin_Winter <- (temp_chunk$Tmin_Winter - mean(temp_chunk$Tmin_Winter)) / sd(temp_chunk$Tmin_Winter)
+temp_chunk$Tmax_Summer <- (temp_chunk$Tmax_Summer - mean(temp_chunk$Tmax_Summer)) / sd(temp_chunk$Tmax_Summer)
+temp_chunk <- temp_chunk %>% pivot_longer(cols = c("T_Winter", "T_Summer", "Tmax_Summer", "Tmin_Winter"))
+
+temp_chunk$unnorm_value <- temp_chunk_unorm$value
+temp_chunk <- temp_chunk %>% mutate(mytext = paste("Category: ", name, "\nYear: ", as.character(year), "\nNormalized Temp.: ", as.character(value), "\nUnnormalized Temp.:", as.character(unnorm_value)))
+
+plot_norm <- ggplot(data = temp_chunk, aes(x = year, y = value, color = name)) + geom_smooth(se = FALSE) +
+  scale_color_manual(values = c("#FA7988", "#4CB2F9","#EB001C", "#0145ED")) + 
+  theme_minimal() 
+
+plot_unnorm <- ggplot(data = temp_chunk, aes(x = year, y = unnorm_value, color = name)) + geom_smooth(se = FALSE) +
+  scale_color_manual(values = c("#FA7988", "#4CB2F9","#EB001C", "#0145ED")) + 
+  theme_minimal() 
+
+w <- ggplotly(plot_norm)
+w_unnorm <- ggplotly(plot_unnorm)
+
+
+text_1 <- paste("Category:", w$x$data[[1]]$name, "\nYear:", w$x$data[[1]]$x, "\nNormalized Temp.:", w$x$data[[1]]$y, "\nUnnormalized Temp. C.:", w_unnorm$x$data[[1]]$y)
+text_2 <- paste("Category:", w$x$data[[2]]$name, "\nYear:", w$x$data[[2]]$x, "\nNormalized Temp.:", w$x$data[[2]]$y, "\nUnnormalized Temp. C.:", w_unnorm$x$data[[2]]$y)
+text_3 <- paste("Category:", w$x$data[[3]]$name, "\nYear:", w$x$data[[3]]$x, "\nNormalized Temp.:", w$x$data[[3]]$y, "\nUnnormalized Temp. C.:", w_unnorm$x$data[[3]]$y)
+text_4 <- paste("Category:", w$x$data[[4]]$name, "\nYear:", w$x$data[[4]]$x, "\nNormalized Temp.:", w$x$data[[4]]$y, "\nUnnormalized Temp. C.:", w_unnorm$x$data[[4]]$y)
+
+w %>%
+  style(text = text_1, traces = 1) %>%
+  style(text = text_2, traces = 2) %>%
+  style(text = text_3, traces = 3) %>%
+  style(text = text_4, traces = 4)
+
+```
+
+
+### Boxplot of VWC
+
+
+```{r}
+#total_cleaned
+
+vwc_chunk <- total_cleaned %>% filter(RCP == "historical")
+vwc_chunk <- vwc_chunk[,c(24:27)] %>% na.omit()
+colnames(vwc_chunk) <- c("VWC_Winter", "VWC_Spring", "VWC_Summer", "VWC_Fall")
+vwc_chunk <- vwc_chunk %>% pivot_longer(cols = c("VWC_Winter", "VWC_Spring", "VWC_Summer", "VWC_Fall"))
+
+ggplot(data = vwc_chunk, aes(x = name, y = value, fill = name)) + geom_boxplot()
+
+
+```
+
+
+### Interactive map and bar chart
+
+#### Foliage Stacked Bar Chart
+
+
+```{r}
+
+library(RColorBrewer)
+library(plotly)
+
+for(i in 1:113){
+  data <- total_cleaned %>% filter(location_group == i)
+  row <- data[1,c(1,2,7:12,28)]
+  if(i == 1){
+    stacked_data <- row
+  } else{
+    stacked_data <- rbind(stacked_data,row)
+  }
+}
+
+foliage <- pivot_longer(stacked_data, cols = c("Canopy","Ann_Herb","Bare","Herb","Litter","Shrub"))
+foliage$location_group <- foliage$location_group %>% as.character()
+foliage$name <- foliage$name %>% factor(levels = c("Canopy", "Ann_Herb","Shrub","Herb","Litter","Bare"))
+
+write.csv(foliage, "Data/foliage.csv")
+
+plot <- ggplot(data = foliage, aes(x = fct_reorder(location_group, value), y = value, fill = name)) + geom_bar(stat = "identity", width =1) + theme_minimal() +
+  scale_fill_manual(values = c("#3CB042","#E3242B","#98BF64","#99EDC3", "#466D1D", "#836539")) +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+plot
+ggplotly(plot)
+
+## Yeah this is going to be moved to tableau
+
+# Alphabetical order colors
+## c("#E3242B", "#836539","#3CB042","#99EDC3","#98BF64", "#466D1D")
+
+```
+
+
+
+#### Map of location
+
+
+```{r}
+
+## I'm just going to do this in Tableau Lmao
+
+```
+
+
+
+### Correlation plot
+
+
+```{r}
+library(corrplot)
+
+## Plot of the shrubbery
+corr <- cor(total_cleaned[,7:12])
+corrplot.mixed(corr, order = 'AOE', upper = "ellipse", upper.col = COL2('BrBG'), lower.col = COL2('BrBG'), tl.col = 'black')
+
+?corrplot.mixed
+```
+
+
+
+
+### Tabbed other variables over time
+
+
+```{r}
+ggplot(total_cleaned, aes(x = Evap_Summer,y = year)) + geom_smooth()
+ggplot(total_cleaned, aes(x = DrySoilDays_Summer_whole,y = year)) + geom_smooth()
+ggplot(total_cleaned, aes(x = FrostDays_Winter,y = year)) + geom_smooth()
+ggplot(total_cleaned, aes(x = NonDrySWA_Summer_whole,y = year)) + geom_smooth()
+
+```
+
+
+### Winter and summer percipitaion
+
+
+```{r}
+total_cleaned
+
+ppt_chunk <- total_cleaned[,c(3,18:19)] %>% na.omit()
+ppt_chunk <- ppt_chunk %>% group_by(year) %>% summarise_at(vars("PPT_Winter","PPT_Summer"), mean) 
+
+ppt_chunk <- ppt_chunk %>% pivot_longer(cols = c("PPT_Winter","PPT_Summer"))
+
+ggplot(data = ppt_chunk, aes(x = year, y = value, color = name)) + geom_line() + geom_smooth(se = F)
+```
+
+
+
+## Microclimate differences
+
+
+```{r}
+historic_cleaned <- total_cleaned %>% filter(RCP == "historical") %>% na.omit()
+```
+
+
+
+### Correlation plot compaing foliage to other values with significance
+
+
+```{r}
+
+library(corrplot)
+corr_check <- historic_cleaned[,7:27]
+rownames(corr_check) <- NULL
+colnames(corr_check)[c(7,9,10,11,18:21)] <- c("DrySoilDays","DryStress", "FrostDays", "NonDrySWA", "VWC_Winter","VWC_Spring","VWC_Summer", "VWC_Fall")
+
+corr = cor(corr_check)
+corr_test <- cor.mtest(corr_check, conf.level = .95)
+corrplot(corr, p.mat = corr_test$p, sig.level = .10, tl.col = 'black', type = "upper")
+
+```
+
+
+
+### Potential overlaps following corrplot
+
+#### any number of these
+
+### K means clustering
+
+#### Running model then using silhouette method
+
+#### visualizing clusters as best as possible
+
+### Statistics about each cluster in DT datatable
+
+### Visualizing locations by cluster (Tableau 2)
+
+### doing earlier correlation plot again with clusters
+
+## Scenario vibes
+
+## Graph of split
+
+## Website Touches
+Scrollytelling sticky images
+Sliding bar from one graph to another
+Multiple tabs for specific visualization
+Multiple tabs for the project
+Icons
+Table of contents built in
+Quick Navigation on the left
+Custom Visualization theme
+
+
+
+

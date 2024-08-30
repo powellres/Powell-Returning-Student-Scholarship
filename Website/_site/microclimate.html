@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Website - Microclimate Clustering</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
+<script src="site_libs/datatables-binding-0.33/datatables.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
+<script src="site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Website</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./data.html" rel="" target="">
+ <span class="menu-text">Historic Exploratory Data Analysis</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./microclimate.html" rel="" target="" aria-current="page">
+ <span class="menu-text">Microclimate Clustering</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./future.html" rel="" target="">
+ <span class="menu-text">Future Modeling and Scenarios</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#intradata-relationships" id="toc-intradata-relationships" class="nav-link" data-scroll-target="#intradata-relationships">Intradata Relationships</a></li>
+  <li><a href="#clustering-locations" id="toc-clustering-locations" class="nav-link" data-scroll-target="#clustering-locations">Clustering Locations</a></li>
+  <li><a href="#re-approaching-intra-data-relationships" id="toc-re-approaching-intra-data-relationships" class="nav-link" data-scroll-target="#re-approaching-intra-data-relationships">Re-approaching Intra-Data Relationships</a></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Microclimate Clustering</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>After understanding the climate variables, the question arose of what factors determine the amount of water retained in soil for plants to use. One answer to this as mentioned before is season and temperature but that still leaves questions about how plants themselves interact. Whether they are in places where water is stored more or vice versa, there is a relationship to uncover which I hope to find through a location clustering method.</p>
+</section>
+<section id="intradata-relationships" class="level2">
+<h2 class="anchored" data-anchor-id="intradata-relationships">Intradata Relationships</h2>
+<p>Before making any assumptions about plants and their effect, its important to consider any other relationships within the data that may also lead to different conclusions. Amongst the weather variables listed in the exploratory data analysis section, there are a few which correlated strongly due to links in what the variables are reflecting and in the data itself.</p>
+<section id="correlation-plot-of-variables" class="level4">
+<h4 class="anchored" data-anchor-id="correlation-plot-of-variables">Correlation Plot of Variables</h4>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Importing packages</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Importing Data</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>total_cleaned <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../Data/total_merged.csv"</span>) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>X)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(total_cleaned) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>historic_cleaned <span class="ot">&lt;-</span> total_cleaned <span class="sc">%&gt;%</span> <span class="fu">filter</span>(RCP <span class="sc">==</span> <span class="st">"historical"</span>) <span class="sc">%&gt;%</span> <span class="fu">na.omit</span>()</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="do">## specifying the data for correlation and renaming to make text reading easier</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>corr_check <span class="ot">&lt;-</span> historic_cleaned[,<span class="dv">7</span><span class="sc">:</span><span class="dv">27</span>]</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(corr_check)[<span class="fu">c</span>(<span class="dv">7</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">18</span><span class="sc">:</span><span class="dv">21</span>)] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"DrySoilDays"</span>,<span class="st">"DryStress"</span>, <span class="st">"FrostDays"</span>, <span class="st">"NonDrySWA"</span>, <span class="st">"VWC_Winter"</span>,<span class="st">"VWC_Spring"</span>,<span class="st">"VWC_Summer"</span>, <span class="st">"VWC_Fall"</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Correlation plot with unique aesthetics</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>corr <span class="ot">=</span> <span class="fu">cor</span>(corr_check)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>corr_test <span class="ot">&lt;-</span> <span class="fu">cor.mtest</span>(corr_check, <span class="at">conf.level =</span> .<span class="dv">95</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(corr, <span class="at">p.mat =</span> corr_test<span class="sc">$</span>p, <span class="at">sig.level =</span> .<span class="dv">10</span>, <span class="at">tl.col =</span> <span class="st">'black'</span>, <span class="at">col =</span> <span class="fu">COL2</span>(<span class="st">'BrBG'</span>), <span class="at">type =</span> <span class="st">"upper"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="microclimate_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Caption: this correlation plot shows cirlces for correlation, darker green for positive and dark brown for negative. Xs represent where there was no statistically significant presence of correlation.</p>
+<p>In this plot there are a few groups which have strong correlation and some where there is light correlation overall. The foliage values have some week correlation across bare earth, plant litter, and shrubs but nothing overwhelmingly strong outside of the other foliage. Meanwhile the volumetric water content values at the bottom of the graph are strongly correlated with each other. This makes sense as an abudance of rain in one season would relate to the abundance of rain in the others. Outside of this there are a few powerful correlations which I would like to dive in further</p>
+</section>
+<section id="dry-stress-and-summer-termperatures" class="level4">
+<h4 class="anchored" data-anchor-id="dry-stress-and-summer-termperatures">Dry Stress and Summer Termperatures</h4>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## filtering out values which skewed the data</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>side_graph_1 <span class="ot">&lt;-</span> historic_cleaned <span class="sc">%&gt;%</span> <span class="fu">filter</span>(DrySoilDays_Summer_whole <span class="sc">!=</span> <span class="dv">0</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Plotting the relationship, using color to represent a different variable</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> side_graph_1, <span class="fu">aes</span>(<span class="at">x =</span> DrySoilDays_Summer_whole, <span class="at">y =</span> T_Summer, <span class="at">color =</span> Tmax_Summer)) <span class="sc">+</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">'lm'</span>, <span class="at">formula=</span> y<span class="sc">~</span>x, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Dry Soil Days Summer"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Temperature Summer"</span>) <span class="sc">+</span> </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Dry Soil Days by Avg. and Max Summer Temp."</span>) <span class="sc">+</span> </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">caption =</span> <span class="st">"Data from the US Geological Survey"</span>) <span class="sc">+</span> </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  my_theme <span class="sc">+</span> </span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color=</span><span class="fu">guide_legend</span>(<span class="at">title=</span><span class="st">"Max Temp. C°"</span>)) <span class="sc">+</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_continuous</span>(<span class="at">low =</span> <span class="st">"white"</span>,<span class="at">high =</span> <span class="st">"red"</span>) <span class="sc">+</span> </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color =</span> <span class="fu">guide_legend</span>(<span class="at">reverse=</span><span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="microclimate_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Caption: the dots in this chart represent a location year’s temperature and number of dry soil days with the line representing the regression slope of the relationship.</p>
+<p>This data shows some of the positively correlated values. The average and maximum summer temperatures affected the number of days with dry soil which is expected due to the increased heat having an effect on evaporation, a relationship which also can be seen on the correlation chart. The relationship isn’t as clean as with the other variables but the regression line added shows a positive correlation between the two.</p>
+<p>Next to look at an opposite relationship.</p>
+</section>
+<section id="frost-days-and-avg.-winter-temperature" class="level4">
+<h4 class="anchored" data-anchor-id="frost-days-and-avg.-winter-temperature">Frost days and Avg. Winter Temperature</h4>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Just the plot</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> historic_cleaned, <span class="fu">aes</span>(<span class="at">x =</span> FrostDays_Winter, <span class="at">y =</span> T_Winter, <span class="at">color =</span> T_Winter)) <span class="sc">+</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">'lm'</span>, <span class="at">formula=</span> y<span class="sc">~</span>x) <span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Days"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Avg. Winter Temperature"</span>) <span class="sc">+</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Winter Temperature by Number Frost Days"</span>) <span class="sc">+</span> </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">caption =</span> <span class="st">"Data from the US Geological Survey"</span>) <span class="sc">+</span> </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  my_theme <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span> </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_continuous</span>(<span class="at">high =</span> <span class="st">"white"</span>,<span class="at">low =</span> <span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="microclimate_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Caption: the dots in this chart represent a location year’s temperature and number of frost days with the line representing the regression slope of the relationship.</p>
+<p>This is a clearer relationship than the last with a clear relationship between the number of days below 0 degrees celcius and the avarge temperature of the winter that year. This is not surprising as colder temperatures on the average lead to colder days but it is interesting that there is alomst a logarithmic curve to the data despite a linear fit work to approximate the relationship. Now back to a hotter relationship</p>
+</section>
+<section id="summer-evaporation-and-summer-precipitation" class="level4">
+<h4 class="anchored" data-anchor-id="summer-evaporation-and-summer-precipitation">Summer Evaporation and Summer Precipitation</h4>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: FALSE</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: FALSE</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Just the plot again</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> historic_cleaned, <span class="fu">aes</span>(<span class="at">x =</span> Evap_Summer, <span class="at">y =</span> PPT_Summer, <span class="at">color =</span> PPT_Summer)) <span class="sc">+</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">'lm'</span>, <span class="at">formula=</span> y<span class="sc">~</span>x, <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Evaporation Amount in Summer"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Precipitation in Summer"</span>) <span class="sc">+</span> </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Evaporation by Precipitation"</span>) <span class="sc">+</span> </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">caption =</span> <span class="st">"Data from the US Geological Survey"</span>) <span class="sc">+</span> </span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  my_theme <span class="sc">+</span> </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span> </span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_continuous</span>(<span class="at">low =</span> <span class="st">"white"</span>,<span class="at">high =</span> <span class="st">"grey"</span>) <span class="sc">+</span> </span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color =</span> <span class="fu">guide_legend</span>(<span class="at">reverse=</span><span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="microclimate_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Caption: the dots in this chart represent a location year’s evaporation and precipitation amount with the line representing the regression slope of the relationship.</p>
+<p>While evaporation was mentioned in passing earlier, there is clear evidence that more rain and precipitation in the summer leads to more evaporation. This is a clear and expected as relationship as during the warm summers with more water there is more to evaporate. It is still assuring to see suxh expected relationships in the data.</p>
+<p>While there are other individual relationships to investigate, the correlations in weather data are expected and don’t show much of the specifics that the park’s situation would reflect. Thus I’ll be transition from focusing on how the weather affects each other to how the local flora changes the effects of the weather on the soil and earth.</p>
+</section>
+</section>
+<section id="clustering-locations" class="level2">
+<h2 class="anchored" data-anchor-id="clustering-locations">Clustering Locations</h2>
+<p>As we saw from the correlation plot, the foliage itself only has light correlation with the weather variables with highlights being temperature and volumetric water content. I wish to go further in examining this relationship by grouping the locations and conducting analysis to see which combinations lead to different water retainment and temperature results.</p>
+<p>In order to do this I will be conducting a K-means clustering algorithm to determine the optimal number of groups as well as the distributions of those groups themselves.</p>
+<section id="choosing-number-of-clusters" class="level4">
+<h4 class="anchored" data-anchor-id="choosing-number-of-clusters">Choosing Number of Clusters</h4>
+<p>My first step involved taking the foliage data and placing it into the sorting algorithm at many different cluster sizes. Next, I took summaries of the clusters internal closeness, or how well clustered the variables are, and compared the amounts for each number of clusters.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: FALSE</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: FALSE</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="do">## setting random seed so all the values are reproducable</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">25</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Selecting important values</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>clustering_val <span class="ot">&lt;-</span> historic_cleaned[,<span class="dv">7</span><span class="sc">:</span><span class="dv">12</span>]</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Normalizing</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>){</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  clustering_val[,i] <span class="ot">&lt;-</span> (clustering_val[,i] <span class="sc">-</span> <span class="fu">mean</span>(clustering_val[,i]))<span class="sc">/</span> <span class="fu">sd</span>(clustering_val[,i])</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Hyperparameters?</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>n_clusters <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>kmeans_test <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n_clusters)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="do">## Testing a variety of cluster sizes</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_clusters){</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  kmeans_out <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(clustering_val, <span class="at">centers =</span> i, <span class="at">nstart =</span> <span class="dv">20</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  kmeans_test[i] <span class="ot">&lt;-</span> kmeans_out<span class="sc">$</span>tot.withinss</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="do">## Within cluster sum of squares</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>cluster_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">clusters =</span> <span class="dv">1</span><span class="sc">:</span>n_clusters, <span class="at">Closeness =</span> kmeans_test)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="do">## Plotting to find show the best line</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cluster_df, <span class="fu">aes</span>(<span class="at">x =</span> clusters, <span class="at">y =</span> Closeness)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>        <span class="at">yintercept =</span> kmeans_test, </span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>        <span class="at">linetype =</span> <span class="st">'dashed'</span>, </span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>        <span class="at">col =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">'#000000'</span>,<span class="dv">4</span>),<span class="st">'#FF0000'</span>, <span class="fu">rep</span>(<span class="st">'#000000'</span>, <span class="dv">5</span>))</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span> </span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>  my_theme <span class="sc">+</span> </span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Optimal Cluster Test"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Number of Clusters"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Within Cluster Sum of Squares"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="microclimate_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Caption: An elbow chart highlighting the point where the slope of the decrease in the loss passes 45 degrees, indicating a the begining pf decreasing returns and optimal number of clusters.</p>
+<p>After using the elbow method to determine the optimal number of clusters, I found that five was the optimal number. I then took a model with that number of clusters and reapplied it to the data in order to use it for analysis. The results showed interesting relationships between the different foliage types.</p>
+</section>
+<section id="data-table-of-the-cluster-means" class="level4">
+<h4 class="anchored" data-anchor-id="data-table-of-the-cluster-means">Data Table of the Cluster Means</h4>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Importing library</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="do">## making table with centers</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>kmeans_out <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(clustering_val, <span class="at">centers =</span> <span class="dv">5</span>, <span class="at">nstart =</span> <span class="dv">20</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>table <span class="ot">&lt;-</span> kmeans_out<span class="sc">$</span>centers <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="do">## De-normalizing them</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">7</span><span class="sc">:</span><span class="dv">12</span>){</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  table[,i<span class="dv">-6</span>] <span class="ot">&lt;-</span><span class="fu">mean</span>(historic_cleaned[,i]) <span class="sc">+</span> (table[,i<span class="dv">-6</span>] <span class="sc">*</span> <span class="fu">sd</span>(historic_cleaned[,i]))</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="do">## printing data table</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+
+<div class="datatables html-widget html-fill-item" id="htmlwidget-57649d37a5efd6c1b971" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-57649d37a5efd6c1b971">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5"],[0.7648854961832878,4.170103092783519,19.70274771024144,5.944929482874428,10.33333333333332],[-2.498001805406602e-15,5.201030927835072,1.942890293094024e-15,-2.831068712794149e-15,-4.163336342344337e-16],[85.86259541984741,32.81443298969076,52.48875936719401,63.30423102753544,32.47619047619047],[3.112977099236629,12.82989690721649,10.83680266444627,9.102753525856276,12.76190476190474],[4.819847328244212,19.57731958762884,10.383846794338,9.932169241101349,20.76190476190477],[4.170992366412172,28.22680412371125,16.92089925062447,11.66286098052382,25.85714285714288]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Canopy<\/th>\n      <th>Ann_Herb<\/th>\n      <th>Bare<\/th>\n      <th>Herb<\/th>\n      <th>Litter<\/th>\n      <th>Shrub<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Canopy","targets":1},{"name":"Ann_Herb","targets":2},{"name":"Bare","targets":3},{"name":"Herb","targets":4},{"name":"Litter","targets":5},{"name":"Shrub","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>Caption: a table of the average value of each foliage type for each cluster</p>
+<p>A few things that immediately jumped out after looking through the table was the one cluster, five, which seems to have been structured around location with ann_herb, the rest of its values overlap with other clusters. Outside of this, Bare earth and Litter have opposite relationships with the clusters with the most bare earth having the least litter and vice versa, showing a dimension by which the clusters found siginificance. Shrubs also had a similar relationship to bare earth although slightly different between clusters five and one. Otherwise, cluster 1 seems to have more foliage covering rather than bare earth, cluster 2 is well rounded, cluster 4 is predominantly bare earth, cluster 3 also but less so, and cluster 5 being middle of the road outside of the Ann herb values. Now lets see how these clusters act between each of the foliage types</p>
+</section>
+<section id="visualizing-clusters-of-data-in-foliage" class="level4">
+<h4 class="anchored" data-anchor-id="visualizing-clusters-of-data-in-foliage">Visualizing Clusters of Data in Foliage</h4>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Withdrawing cluster values and assigning them</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>kmeans_out <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(clustering_val, <span class="at">centers =</span> <span class="dv">5</span>, <span class="at">nstart =</span> <span class="dv">20</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>historic_cleaned<span class="sc">$</span>cluster <span class="ot">&lt;-</span> kmeans_out<span class="sc">$</span>cluster <span class="sc">%&gt;%</span> <span class="fu">as.factor</span>()</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Values for Pair Plot</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>pair_data <span class="ot">&lt;-</span> historic_cleaned <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">c</span>(Ann_Herb, Canopy, Bare, Herb, Litter, Shrub))</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Number of colors</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>l <span class="ot">&lt;-</span> <span class="dv">6</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Printing it out</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(pair_data, <span class="at">pch =</span> <span class="dv">22</span>, <span class="at">bg =</span> <span class="fu">hcl.colors</span>(l, <span class="st">"Temps"</span>)[kmeans_out<span class="sc">$</span>cluster], <span class="at">col =</span> <span class="fu">hcl.colors</span>(l, <span class="st">"Temps"</span>)[kmeans_out<span class="sc">$</span>cluster])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="microclimate_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Caption: this pair plot shows the behavior of the clusters in relationships between each foliage type</p>
+<p>We can see orange representing cluster 5’s behavior clearly with non zero values for ann herb but even for the rest of the values there seems to be clear differences in the clusters across all of the values. Lets also approach this geographically and see the distribution of each of the locations by cluster.</p>
+</section>
+<section id="geography-of-clusters" class="level4">
+<h4 class="anchored" data-anchor-id="geography-of-clusters">Geography of Clusters</h4>
+
+<div class="tableauPlaceholder" id="viz1716260112846" style="position: relative"><noscript><a href="#"><img alt="Dashboard 1 " src="https://public.tableau.com/static/images/RS/RSS2_1/Dashboard1/1_rss.png" style="border: none"></a></noscript><object class="tableauViz" style="display:none;"><param name="host_url" value="https%3A%2F%2Fpublic.tableau.com%2F"> <param name="embed_code_version" value="3"> <param name="site_root" value=""><param name="name" value="RSS2_1/Dashboard1"><param name="tabs" value="no"><param name="toolbar" value="yes"><param name="static_image" value="https://public.tableau.com/static/images/RS/RSS2_1/Dashboard1/1.png"> <param name="animate_transition" value="yes"><param name="display_static_image" value="yes"><param name="display_spinner" value="yes"><param name="display_overlay" value="yes"><param name="display_count" value="yes"><param name="language" value="en-US"><param name="filter" value="publish=yes"></object></div>                <script type="text/javascript">                    var divElement = document.getElementById('viz1716260112846');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else { vizElement.style.width='100%';vizElement.style.height='727px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+<p>Caption: This interactive graph allows you to see the relationship of locations to each other by cluster, the variety in foliage composition, and the foliage composition of each location by clicking on it on the map.</p>
+<p>In this graph we can see some geographic overlap with instances like the dark blue cluster 1 dot being more in the valley near water with the light blue cluster 4 dot being similarly structured. Outside of that ere are a few green cluster 5 dots but they are not as common as the other types. While the averages were seen in the earlier graph, getting a georgaphic understanding will help us understand the trends in the next few graphs.</p>
+</section>
+</section>
+<section id="re-approaching-intra-data-relationships" class="level2">
+<h2 class="anchored" data-anchor-id="re-approaching-intra-data-relationships">Re-approaching Intra-Data Relationships</h2>
+<p>With the clusters being established, we can reapply our clustering to variable relationships we have already seen. Starting with a revisit of the correlation plot shown earlier.</p>
+<section id="correlation-plot-with-clusters" class="level4">
+<h4 class="anchored" data-anchor-id="correlation-plot-with-clusters">Correlation Plot with Clusters</h4>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Reslicing correlation data with the clusters added</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>corr_check <span class="ot">&lt;-</span> historic_cleaned[,<span class="fu">c</span>(<span class="dv">13</span><span class="sc">:</span><span class="dv">27</span>,<span class="dv">29</span>)] <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">instance =</span> <span class="dv">1</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(corr_check) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(corr_check)[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">12</span><span class="sc">:</span><span class="dv">15</span>)] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"DrySoilDays"</span>,<span class="st">"DryStress"</span>, <span class="st">"FrostDays"</span>, <span class="st">"NonDrySWA"</span>, <span class="st">"VWC_Winter"</span>,<span class="st">"VWC_Spring"</span>,<span class="st">"VWC_Summer"</span>, <span class="st">"VWC_Fall"</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>corr_check <span class="ot">&lt;-</span> <span class="fu">pivot_wider</span>(corr_check, <span class="at">names_from =</span> <span class="st">"cluster"</span>, <span class="at">values_from =</span> instance, <span class="at">values_fill =</span> <span class="dv">0</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="do">## same deal except with clusters this time</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>corr <span class="ot">=</span> <span class="fu">cor</span>(corr_check)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>corr_test <span class="ot">&lt;-</span> <span class="fu">cor.mtest</span>(corr_check, <span class="at">conf.level =</span> .<span class="dv">95</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(corr, <span class="at">p.mat =</span> corr_test<span class="sc">$</span>p, <span class="at">sig.level =</span> .<span class="dv">10</span>, <span class="at">tl.col =</span> <span class="st">'black'</span>, <span class="at">col =</span> <span class="fu">COL2</span>(<span class="st">'BrBG'</span>), <span class="at">type =</span> <span class="st">"upper"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="microclimate_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Caption: This correlation plot shows cirlces for correlation, darker green for positive and dark brown for negative. Xs represent where there was no statistically significant presence of correlation.</p>
+<p>In comparison, the clusters do not seem to have as much of an effect on data relating to the weather but do have connections to the volumetric water content and temperature like th foliage did. Also worth mentioning is the relationship to dry stress, or dry soil, days and the availability of water in the soil. Showing again the trends that we saw with the goliage</p>
+</section>
+<section id="volumetric-water-content-by-cluster" class="level4">
+<h4 class="anchored" data-anchor-id="volumetric-water-content-by-cluster">Volumetric water content by Cluster</h4>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">## The processing for this data took too long so I saved it and sourced it for compiling time improvement</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"../Data/vwc_data_historic_cluster.csv"</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>Cluster <span class="ot">&lt;-</span> data<span class="sc">$</span>Cluster <span class="sc">%&gt;%</span> <span class="fu">as.character</span>()</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Plotting it out</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> data, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> value, <span class="at">color =</span> Cluster)) <span class="sc">+</span> </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Volumetric Water Content by Season and Cluster"</span>) <span class="sc">+</span> </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Median Cubic Meters of Water per Cubic Meter of Soil"</span>) <span class="sc">+</span> </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">caption =</span> <span class="st">"Data from the US Geological Survey"</span>) <span class="sc">+</span> </span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  my_theme <span class="sc">+</span> </span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#BCD2EE"</span>,<span class="st">"#9B7EDE"</span>,<span class="st">"#832161"</span>, <span class="st">"#52050A"</span>,<span class="st">"#76E7CD"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="microclimate_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Caption: This chart shows the seasonal differences in volumetric water content across the different clusters.</p>
+<p>In returning to this graph, we can see how cluster 1 with an increased amount of foliage resulted in more water retention over all seasons in comparison to the other groups. The outlier in this case is cluster 5 which, with its fewer groups, seems to have a linear relationship. This may be due to the fewer data points or it represents an interesting behavior of ann herbs! Next lets investigate the soil relationship more.</p>
+</section>
+<section id="dry-soil-days-with-clusters" class="level4">
+<h4 class="anchored" data-anchor-id="dry-soil-days-with-clusters">Dry Soil Days with Clusters</h4>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Slicing data and summarizing</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>other_graph1 <span class="ot">&lt;-</span> historic_cleaned <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">c</span>(year, DrySoilDays_Summer_whole, cluster))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>other_graph1 <span class="ot">&lt;-</span> other_graph1 <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(year, cluster) <span class="sc">%&gt;%</span> <span class="fu">summarise_at</span>(<span class="fu">vars</span>(<span class="st">"DrySoilDays_Summer_whole"</span>), mean) </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Plotting</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(other_graph1, <span class="fu">aes</span>(<span class="at">y =</span> DrySoilDays_Summer_whole,<span class="at">x =</span> year, <span class="at">color =</span> cluster)) <span class="sc">+</span> </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Dry Soil Days by Year and Cluster"</span>) <span class="sc">+</span> </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Days"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Year"</span>) <span class="sc">+</span> </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">caption =</span> <span class="st">"Data from the US Geological Survey"</span>) <span class="sc">+</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  my_theme <span class="sc">+</span> </span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#BCD2EE"</span>,<span class="st">"#9B7EDE"</span>,<span class="st">"#832161"</span>, <span class="st">"#52050A"</span>,<span class="st">"#76E7CD"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="microclimate_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Caption: The graph depicts historic dry soil days in relation to cluster and time.</p>
+<p>On the flipside of the previous graph, we can see how clusters with more plant matter had fewer dry soil days. On the other side we can check the water availability.</p>
+</section>
+<section id="soil-water-availability-with-clusters" class="level4">
+<h4 class="anchored" data-anchor-id="soil-water-availability-with-clusters">Soil Water Availability with Clusters</h4>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Slicing data again</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>other_graph1 <span class="ot">&lt;-</span> historic_cleaned <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">c</span>(year, NonDrySWA_Summer_whole, cluster))</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>other_graph1 <span class="ot">&lt;-</span> other_graph1 <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(year, cluster) <span class="sc">%&gt;%</span> <span class="fu">summarise_at</span>(<span class="fu">vars</span>(<span class="st">"NonDrySWA_Summer_whole"</span>), mean) </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Plotting</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(other_graph1, <span class="fu">aes</span>(<span class="at">y =</span> NonDrySWA_Summer_whole,<span class="at">x =</span> year, <span class="at">color =</span> cluster)) <span class="sc">+</span> </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> </span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Soil Water Availability in Summer by Year and Cluster"</span>) <span class="sc">+</span> </span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Total Centimetes of water"</span>)<span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Year"</span>) <span class="sc">+</span> </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">caption =</span> <span class="st">"Data from the US Geological Survey"</span>) <span class="sc">+</span> </span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  my_theme <span class="sc">+</span> </span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#BCD2EE"</span>,<span class="st">"#9B7EDE"</span>,<span class="st">"#832161"</span>, <span class="st">"#52050A"</span>,<span class="st">"#76E7CD"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="microclimate_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Caption: The graph depicts soil water availability in relation to cluster and time.</p>
+<p>Again, despite an overall decrease that we also saw in the previously graphed historic data, clusters with plant matter had more water retention. All of this begs the question of whether the plants are their due to the increased soil retention or if they are actually creating the conditions to increase absorption themselves. While that question is out of the scope of this project, the correlation between the two variables have been proven solidly.</p>
+</section>
+</section>
+<section id="conclusions" class="level2">
+<h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
+<p>After seeing the overall behavior of the data and then highlight differences in plant matter composition of various locations, I was able to highlight specific differences in terrain which clusters are able to reflect. This relationship seems to be compelling and there is also an argument that the plants make the areas more resilient to climate change factors or vice versa. All interesting topics which can be found with this data.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
